@@ -1,0 +1,38 @@
+c array.sh: start time           Tue Feb  4 15:50:55 CET 2025
+c array.sh: job id               6468158
+c array.sh: task id              7
+c array.sh: start index          385
+c array.sh: end index            401
+c array.sh: index                385
+c array.sh: benchmark            x9-10098.sat.sanitized
+c array.sh: index                386
+c array.sh: benchmark            x9-11034.sat.sanitized
+c array.sh: index                387
+c array.sh: benchmark            x9-11053.sat.sanitized
+c array.sh: index                388
+c array.sh: benchmark            x9-11062.sat.sanitized
+c array.sh: index                389
+c array.sh: benchmark            x9-11077.sat.sanitized
+c array.sh: index                390
+c array.sh: benchmark            x9-11088.sat.sanitized
+c array.sh: index                391
+c array.sh: benchmark            x9-11093.sat.sanitized
+c array.sh: index                392
+c array.sh: benchmark            x9-11094.sat.sanitized
+c array.sh: index                393
+c array.sh: benchmark            x9-12001.sat.sanitized
+c array.sh: index                394
+c array.sh: benchmark            x9-12014.sat.sanitized
+c array.sh: index                395
+c array.sh: benchmark            x9-12021.sat.sanitized
+c array.sh: index                396
+c array.sh: benchmark            x9-12035.sat.sanitized
+c array.sh: index                397
+c array.sh: benchmark            x9-12063.sat.sanitized
+c array.sh: index                398
+c array.sh: benchmark            x9-12087.sat.sanitized
+c array.sh: index                399
+c array.sh: benchmark            x9-12092.sat.sanitized
+c array.sh: index                400
+c array.sh: benchmark            x9-12098.sat.sanitized
+c array.sh: end time             Tue Feb  4 16:19:46 CET 2025

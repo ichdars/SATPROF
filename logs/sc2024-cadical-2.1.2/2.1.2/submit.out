@@ -1,0 +1,14 @@
+version    2.1.2
+binary     /home/fr/fr_fr/fr_fp1060/src/cadical/build/cadical
+directory  2.1.2
+benchmarks 400
+delta      64
+jobs       7
+name       c232.1.2
+options    -n --stats
+slurmspace 236G
+slurmtime  6000
+sockets    2
+threads    1
+space      7000
+time       5000

@@ -1,10 +1,11 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
 class Benchmark:
     name: str
     solver: str
+    hierarchie: dict[int, 'SolvingStep']
     total_runtime: float
     total_memory: float
 
@@ -21,6 +22,6 @@ class SolvingStep:
 @dataclass
 class ProfilingNode:
     name: str
-    time: str
-    calls: str
-    children: list["ProfilingNode"]
+    time: float = 0.0
+    calls: int = 0
+    children: list["ProfilingNode"] = field(default_factory=list)

@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 class ProfilingNode:
     name: str
     time: float = 0.0
-    calls: int = 0
+    percentage: float = 0.0
     children: list["ProfilingNode"] = field(default_factory=list)
 
 
@@ -23,4 +23,4 @@ class Benchmark:
 class SolvingStep:
     name: str
     time: float
-    memory: float
+    percentage: float

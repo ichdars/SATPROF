@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from .models import *
 import re
 
@@ -13,7 +14,9 @@ def read_logfile(log: Path) -> list[SolvingStep]:
     with log.open("r", encoding="utf-8") as file:
         for line in file:
             line = line.strip()
-            
+
+            print(line)
+
             if "[ run-time profiling ]" in line:
                 right_block = True
                 continue
@@ -38,6 +41,28 @@ def read_logfile(log: Path) -> list[SolvingStep]:
     return res
 
 
-def build_hierarchie(steps: list[SolvingStep]):
-    for step in steps:
-        print(f"{step.name}, {step.time}, {step.memory}")
+def build_hierarchie(entries: list[SolvingStep], index: int, parent_time: float) -> tuple[list[ProfilingNode], int]: 
+
+    children: list[ProfilingNode] = []
+    time: float = 0.0
+
+    while index < len(entries) and time < parent_time - 0.01:
+        entry = entries[index]
+        time += entry.time
+
+        index += 1
+
+        child = ProfilingNode(entry.name, entry.time, entry.percentage)
+
+        child.children, index = build_hierarchie(entries, index, entry.time)
+
+        children.append(child)
+
+
+    return children, index
+
+
+def print_tree(node: ProfilingNode, indent: int = 0):
+    print("  " * indent + f"{node.name} | {node.time:.2f}s | {node.percentage:.2f}%")
+    for child in node.children:
+        print_tree(child, indent + 1)

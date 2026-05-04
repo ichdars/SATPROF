@@ -2,7 +2,7 @@
 from argparse import ArgumentParser
 from pathlib import Path
 from src.parse import *
-
+from src.draw import *
 
 def build_parser() -> ArgumentParser:
     parser: ArgumentParser = ArgumentParser()
@@ -18,7 +18,13 @@ def main(parser: ArgumentParser):
 
     steps = read_logfile(args.file)
 
-    build_hierarchie(steps)
+    root = ProfilingNode("solve", steps[-1].time, steps[-1].percentage)
+
+    for children in build_hierarchie(steps[:-1], 0, steps[-1].time)[0]:
+        print_tree(children)
+    
+    dot = tree_to_dot(root)
+    dot.render("output", format="svg", view=True)
 
 if __name__ == "__main__":
     parser = build_parser()

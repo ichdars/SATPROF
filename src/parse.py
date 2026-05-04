@@ -1,54 +1,43 @@
 from pathlib import Path
 from .models import *
+import re
 
 
-def read_logfile(log: Path):
+def read_logfile(log: Path) -> list[SolvingStep]:
+    pattern = re.compile(r"c\s+(\d+\.\d+)\s+(\d+\.\d+)%\s+(\w+)")
+
+    res: list[SolvingStep] = []
+
+    right_block: bool = False
+    
     with log.open("r", encoding="utf-8") as file:
-        root = ProfilingNode("root")
-        stack = [root]
-        last_time = 0.0
-
         for line in file:
+            line = line.strip()
+            
+            if "[ run-time profiling ]" in line:
+                right_block = True
+                continue
+            
+            if "[ statistics ]" in line:
+                right_block = False
+                continue
+            
+            if right_block:
+                match = pattern.search(line)
 
-            if line.startswith("c "):
+                if match:
 
-                partition: list[str] = line.split()
+                    time = float(match.group(1))
 
-                if len(partition) < 3:
+                    memory = float(match.group(2))
 
-                    continue
+                    name = str(match.group(3))
 
-                symbol = partition[1]
+                    res.append(SolvingStep(name, time, memory))
 
-                try:
-                    current_time = float(partition[2])
-
-                except:
-                    continue
-
-                time_difference = current_time - last_time
-                last_time = current_time
-
-                current_node = stack[-1]
-                current_node.time += time_difference
-                current_node.calls += 1
-
-                if symbol == "{":
-                    tmp_node = ProfilingNode("block")
-                    current_node.children.append(tmp_node)
-                    stack.append(tmp_node)
-
-                elif symbol == "}":
-                    if len(stack) > 1:
-                        stack.pop()
-                else:
-                    node = ProfilingNode(symbol, time=time_difference, calls=1)
-                    current_node.children.append(node)
-
-    return root
+    return res
 
 
-def print_tree(node: ProfilingNode, indent: int = 0):
-    print("  " * indent + f"{node.name} | time={node.time:.4f} | calls={node.calls}")
-    for child in node.children:
-        print_tree(child, indent + 1)
+def build_hierarchie(steps: list[SolvingStep]):
+    for step in steps:
+        print(f"{step.name}, {step.time}, {step.memory}")

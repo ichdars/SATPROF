@@ -16,10 +16,9 @@ def main(parser: ArgumentParser):
 
     args = parser.parse_args()
 
-    tree = read_logfile(args.file)
+    steps = read_logfile(args.file)
 
-    print_tree(tree)
-
+    build_hierarchie(steps)
 
 if __name__ == "__main__":
     parser = build_parser()

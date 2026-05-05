@@ -19,9 +19,7 @@ def main(parser: ArgumentParser):
     steps = read_logfile(args.file)
 
     root = ProfilingNode("solve", steps[-1].time, steps[-1].percentage)
-
-    for children in build_hierarchie(steps[:-1], 0, steps[-1].time)[0]:
-        print_tree(children)
+    root.children, _ = build_hierarchie(steps[:-1], 0, steps[-1].time)
     
     dot = tree_to_dot(root)
     dot.render("output", format="svg", view=True)

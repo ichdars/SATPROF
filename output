@@ -2,4 +2,52 @@ digraph {
 	solve [label="solve
 361.14s
 100.00%"]
+	solve -> search
+	search [label="search
+358.25s
+99.20%"]
+	search -> stable
+	stable [label="stable
+235.70s
+65.26%"]
+	stable -> unstable
+	unstable [label="unstable
+118.25s
+32.74%"]
+	unstable -> walk
+	walk [label="walk
+4.30s
+1.19%"]
+	walk -> simplify
+	simplify [label="simplify
+2.89s
+0.80%"]
+	simplify -> subsume
+	subsume [label="subsume
+1.53s
+0.42%"]
+	subsume -> vivify
+	vivify [label="vivify
+0.81s
+0.22%"]
+	vivify -> probe
+	probe [label="probe
+0.36s
+0.10%"]
+	probe -> ternary
+	ternary [label="ternary
+0.07s
+0.02%"]
+	ternary -> elim
+	elim [label="elim
+0.01s
+0.00%"]
+	ternary -> parse
+	parse [label="parse
+0.00s
+0.00%"]
+	ternary -> lucky
+	lucky [label="lucky
+0.00s
+0.00%"]
 }

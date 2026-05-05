@@ -15,7 +15,6 @@ def read_logfile(log: Path) -> list[SolvingStep]:
         for line in file:
             line = line.strip()
 
-            print(line)
 
             if "[ run-time profiling ]" in line:
                 right_block = True
@@ -24,7 +23,7 @@ def read_logfile(log: Path) -> list[SolvingStep]:
             if "[ statistics ]" in line:
                 right_block = False
                 continue
-            
+
             if right_block:
                 match = pattern.search(line)
 
@@ -60,9 +59,3 @@ def build_hierarchie(entries: list[SolvingStep], index: int, parent_time: float)
 
 
     return children, index
-
-
-def print_tree(node: ProfilingNode, indent: int = 0):
-    print("  " * indent + f"{node.name} | {node.time:.2f}s | {node.percentage:.2f}%")
-    for child in node.children:
-        print_tree(child, indent + 1)

@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 @dataclass
 class ProfilingNode:
     name: str
+    lvl: int
     time: float = 0.0
     percentage: float = 0.0
     children: list["ProfilingNode"] = field(default_factory=list)

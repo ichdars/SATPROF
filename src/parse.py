@@ -39,23 +39,3 @@ def read_logfile(log: Path) -> list[SolvingStep]:
 
     return res
 
-
-def build_hierarchie(entries: list[SolvingStep], index: int, parent_time: float) -> tuple[list[ProfilingNode], int]: 
-
-    children: list[ProfilingNode] = []
-    time: float = 0.0
-
-    while index < len(entries) and time < parent_time - 0.01:
-        entry = entries[index]
-        time += entry.time
-
-        index += 1
-
-        child = ProfilingNode(entry.name, entry.time, entry.percentage)
-
-        child.children, index = build_hierarchie(entries, index, entry.time)
-
-        children.append(child)
-
-
-    return children, index

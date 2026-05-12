@@ -3,6 +3,9 @@ from argparse import ArgumentParser
 from pathlib import Path
 from src.parse import *
 from src.draw import *
+from src.build_tree import *
+import json
+from graphviz import Digraph
 
 def build_parser() -> ArgumentParser:
     parser: ArgumentParser = ArgumentParser()
@@ -18,11 +21,18 @@ def main(parser: ArgumentParser):
 
     steps = read_logfile(args.file)
 
-    root = ProfilingNode("solve", steps[-1].time, steps[-1].percentage)
-    root.children, _ = build_hierarchie(steps[:-1], 0, steps[-1].time)
+    config = Path(__file__).parent / "config" / "config_tree.json"
+
+    with open(config) as f:
+        config_tree = json.load(f)
+    tree = compare_log_to_config(steps, config_tree)
+
+    dot = Digraph()
+    dot.attr(rankdir="TB")
+    build_tree(dot, tree)
     
-    dot = tree_to_dot(root)
-    dot.render("output", format="svg", view=True)
+    dot.render("tree", format="png", cleanup=True)
+    print("Saved to tree.png")
 
 if __name__ == "__main__":
     parser = build_parser()

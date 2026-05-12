@@ -1,14 +1,15 @@
 import graphviz
 from .models import *
 
-def tree_to_dot(tree: ProfilingNode, dot: graphviz.Digraph=None) -> graphviz.Digraph: # type: ignore
-    if dot is None:
-        dot = graphviz.Digraph()
-    
-    dot.node(tree.name, label=f"{tree.name}\n{tree.time:.2f}s")
-
-
-    for child in tree.children:
-        dot.edge(tree.name, child.name)
-        tree_to_dot(child, dot)
-    return dot
+def build_tree(dot, node, parent_id=None, counter=[0]):
+    node_id = str(counter[0])
+    counter[0] += 1
+ 
+    label = f"{node['name']}\n(lvl {node['profiling_lvl']})"
+    dot.node(node_id, label=label)
+ 
+    if parent_id is not None:
+        dot.edge(parent_id, node_id)
+ 
+    for child in node["children"]:
+        build_tree(dot, child, node_id, counter)

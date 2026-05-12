@@ -1,0 +1,39 @@
+{
+    "name": "solve",
+    "profiling_lvl": 0,
+    "children": [
+        { "name": "parse", "profiling_lvl": 0, "children": [] },
+        { "name": "check", "profiling_lvl": 2, "children": [] },
+        { "name": "search", "profiling_lvl": 1, "children": [
+            { "name": "stable", "profiling_lvl": 2, "children": [
+                { "name": "analyze", "profiling_lvl": 3, "children": [
+                    { "name": "analyze", "profiling_lvl": 3, "children": [] }
+                ] },
+                { "name": "propstable", "profiling_lvl": 4, "children": [
+                    { "name": "propagate", "profiling_lvl": 4, "children": [] }
+                ] }
+            ] },
+            { "name": "unstable", "profiling_lvl": 2, "children": [
+                { "name": "analyze", "profiling_lvl": 3, "children": [
+                    { "name": "analyze", "profiling_lvl": 3, "children": [] }
+                ] },
+                { "name": "propunstable", "profiling_lvl": 4, "children": [
+                    { "name": "propagate", "profiling_lvl": 4, "children": [] }
+                ]}
+            ] }
+        ] },
+        { "name": "simplify", "profiling_lvl": 1, "children": [
+            { "name": "preprocess", "profiling_lvl": 2, "children": [
+                { "name": "lucky", "profiling_lvl": 2, "children": [] },
+                { "name": "elim", "profiling_lvl": 2, "children": [] }
+            ] },
+            { "name": "walk", "profiling_lvl": 2, "children": [
+                { "name": "warmup", "profiling_lvl": 3, "children": [] }
+            ] },
+            { "name": "probe", "profiling_lvl": 2, "children": [] },
+            { "name": "elim", "profiling_lvl": 2, "children": [] }
+        ]},
+        { "name": "restore", "profiling_lvl": 2, "children": []},
+        { "name": "extend", "profiling_lvl": 2, "children": []}  
+    ]
+}

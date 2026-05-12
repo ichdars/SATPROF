@@ -5,7 +5,7 @@ def tree_to_dot(tree: ProfilingNode, dot: graphviz.Digraph=None) -> graphviz.Dig
     if dot is None:
         dot = graphviz.Digraph()
     
-    dot.node(tree.name, label=f"{tree.name}\n{tree.time:.2f}s\n{tree.percentage:.2f}%")
+    dot.node(tree.name, label=f"{tree.name}\n{tree.time:.2f}s")
 
 
     for child in tree.children:

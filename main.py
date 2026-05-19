@@ -29,7 +29,7 @@ def main(parser: ArgumentParser):
 
     dot = Digraph()
     dot.attr(rankdir="TB")
-    build_tree(dot, tree)
+    draw_tree(dot, tree)
     
     dot.render("tree", format="png", cleanup=True)
     print("Saved to tree.png")

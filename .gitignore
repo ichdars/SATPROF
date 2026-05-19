@@ -1,3 +1,6 @@
+# images
+*.png
+
 # logfiles
 *.err
 *.log

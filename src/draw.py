@@ -35,18 +35,28 @@ def shared_nodes(root: ProfilingNode) -> set[str]:
     return res
 
 
-def draw_tree(dot, node, parent_id=None, counter=[0]):
-    node_id = str(counter[0])
-    counter[0] += 1
+def draw_tree(dot, node, parent_id=None, drawn=None, shared=None):
+    """ function to draw the actual DAG, by identifieng which
+    node has a single parent and which one has multiple
+    drawn = set of strings of already drawn nodes
+    """
 
     if node is None:
         return
+    
+    if drawn is None:
+        drawn = set()
+        shared = shared_nodes(node)
+    
+    node_id = node.name
 
-    label = f"{node.name}"
-    dot.node(node_id, label=label)
- 
+    if node_id not in drawn:
+        drawn.add(node_id)
+
+         
+        for child in node.children:
+            draw_tree(dot, child, node_id, drawn, shared)
+
+
     if parent_id is not None:
-        dot.edge(parent_id, node_id)
- 
-    for child in node.children:
-        draw_tree(dot, child, node_id, counter)
+        dot.edge(parent_id, node_id) 

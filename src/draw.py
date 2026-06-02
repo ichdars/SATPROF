@@ -52,6 +52,7 @@ def draw_tree(dot, node, parent_id=None, drawn=None, shared=None):
 
     if node_id not in drawn:
         drawn.add(node_id)
+        dot.node(node_id, label=label_node(node))
 
          
         for child in node.children:

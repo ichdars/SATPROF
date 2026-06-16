@@ -8,14 +8,16 @@ def label_node(node: ProfilingNode) -> str:
     return f"{node.name}\n{node.time:.2f}s \n{node.percentage:.2f}%"
 
 
-def calc_node_size(node: ProfilingNode, root: ProfilingNode) -> float:
+def calc_node_size(node: ProfilingNode, root: ProfilingNode) -> tuple[float, float]:
     """
     function to calculate each nodes size relative to the solving time
     """
 
     frac: float = node.time / root.time if root.time > 0 else 0.0
-    size: float = 3 * math.sqrt(frac)
-    return max(0.5, min(size, 4))
+    size: float = 3 * frac
+    node_size: float = max(0.5, min(size, 3.5))
+    font_size: float = max(10.0, min(25.0, 45.0 * frac))
+    return node_size, font_size
 
 
 def shared_nodes(root: ProfilingNode) -> set[str]:
@@ -48,7 +50,7 @@ def shared_nodes(root: ProfilingNode) -> set[str]:
     return res
 
 
-def draw_tree(dot, node, parent_id=None, drawn=None, shared=None, filled = False, benchmark=None, root: ProfilingNode | None = None):
+def draw_tree(dot, node, parent_id=None, drawn=None, shared=None, filled = False, root: ProfilingNode | None = None):
     """ function to draw the actual DAG, by identifieng which
     node has a single parent and which one has multiple
     drawn = set of strings of already drawn nodes
@@ -69,7 +71,7 @@ def draw_tree(dot, node, parent_id=None, drawn=None, shared=None, filled = False
         drawn.add(node_id)
 
         
-        size = calc_node_size(node, root_node)
+        node_size, font_size = calc_node_size(node, root_node)
         
         if filled:
             dot.node(node_id,
@@ -77,20 +79,22 @@ def draw_tree(dot, node, parent_id=None, drawn=None, shared=None, filled = False
                     style="filled",
                     fillcolor=node.color,
                     fontcolor="black",
-                    shape="circle",
-                    fixedsize="true",
-                    height=f"{size:.2f}",
-                    width=f"{size:.2f}",
+                    shape="rectangle",
+                    fixedsize="shape",
+                    height=f"{node_size:.2f}",
+                    width=f"{node_size * 1.5:.2f}",
+                    fontsize=f"{font_size:.0f}"
                     )
         else:
             dot.node(node_id,
                     label=label_node(node),
                     color=node.color,
                     fontcolor="black",
-                    shape="circle",
-                    fixedsize="true",
-                    height=f"{size:.2f}",
-                    width=f"{size:.2f}"
+                    shape="rectangle",
+                    fixedsize="shape",
+                    height=f"{node_size:.2f}",
+                    width=f"{node_size * 1.5:.2f}",
+                    fontsize=f"{font_size:.0f}"
                     )
             
 

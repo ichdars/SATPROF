@@ -30,7 +30,10 @@ def main(parser: ArgumentParser):
 
     dot = Digraph()
     dot.attr(rankdir="TB")
-    draw_tree(dot, tree, filled=args.filled)
+
+    benchmark: Benchmark = create_benchmark(args.file, config_tree, "a benchmark", "cadical", 4)
+
+    draw_tree(dot, tree, filled=args.filled, root=benchmark.root)
 
     dot.render("tree", format="png", cleanup=True)
     print("Saved to tree.png")

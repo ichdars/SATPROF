@@ -16,7 +16,7 @@ class Benchmark:
     name: str
     solver: str
     profiling_level: int
-    root: ProfilingNode | None
+    root: ProfilingNode
 
 
 @dataclass

@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from .models import *
+from .build_tree import *
 import re
 
 
@@ -39,3 +40,8 @@ def read_logfile(log: Path) -> list[SolvingStep]:
 
     return res
 
+
+def create_benchmark(log_path: Path, config: dict, name: str, solver: str, profiling_lvl: int=2):
+    steps: list[SolvingStep] = read_logfile(log_path)
+    root: ProfilingNode = compare_log_to_config(steps, config)
+    return Benchmark(name, solver, profiling_lvl, root)

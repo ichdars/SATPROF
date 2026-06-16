@@ -1,9 +1,22 @@
 import graphviz
 from .models import *
+from .parse import create_benchmark
+import math
 
 
 def label_node(node: ProfilingNode) -> str:
     return f"{node.name}\n{node.time:.2f}s \n{node.percentage:.2f}%"
+
+
+def calc_node_size(node: ProfilingNode, root: ProfilingNode) -> float:
+    """
+    function to calculate each nodes size relative to the solving time
+    """
+
+    frac: float = node.time / root.time
+    size: float = 3 * math.sqrt(frac)
+    return max(0.5, min(size, 4))
+
 
 def shared_nodes(root: ProfilingNode) -> set[str]:
     """
@@ -35,7 +48,7 @@ def shared_nodes(root: ProfilingNode) -> set[str]:
     return res
 
 
-def draw_tree(dot, node, parent_id=None, drawn=None, shared=None):
+def draw_tree(dot, node, parent_id=None, drawn=None, shared=None, filled = False):
     """ function to draw the actual DAG, by identifieng which
     node has a single parent and which one has multiple
     drawn = set of strings of already drawn nodes
@@ -52,11 +65,29 @@ def draw_tree(dot, node, parent_id=None, drawn=None, shared=None):
 
     if node_id not in drawn:
         drawn.add(node_id)
-        dot.node(node_id, label=label_node(node))
+
+        root       
+
+        # size = calc_node_size(node, )
+        
+        if filled:
+            dot.node(node_id,
+                    label=label_node(node),
+                    style="filled",
+                    fillcolor=node.color,
+                    fontcolor="black",
+                    )
+        else:
+            dot.node(node_id,
+                    label=label_node(node),
+                    color=node.color,
+                    fontcolor="black",
+                    )
+            
 
          
         for child in node.children:
-            draw_tree(dot, child, node_id, drawn, shared)
+            draw_tree(dot, child, node_id, drawn, shared, filled)
 
 
     if parent_id is not None:

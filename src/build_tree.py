@@ -11,10 +11,12 @@ def config_to_profling(config_node: dict, steps: dict[str, SolvingStep]) -> Prof
         percentage = steps[name].percentage
 
     for child in config_node["children"]:
-        # if child["name"] in steps:  
-        children.append(config_to_profling(child, steps))
+        if child["name"] in steps:  
+            children.append(config_to_profling(child, steps))
     
-    return ProfilingNode(name,lvl=config_node["profiling_lvl"], time=ellapsed_time, percentage=percentage, children=children)
+    color = config_node.get("color", "blue")
+    
+    return ProfilingNode(name,lvl=config_node["profiling_lvl"], time=ellapsed_time, percentage=percentage, color=color ,children=children)
 
 
 def compare_log_to_config(steps: list[SolvingStep], config: dict):

@@ -7,25 +7,58 @@
         { "name": "search", "profiling_lvl": 1, "children": [
             { "name": "stable", "profiling_lvl": 2, "children": [
                 { "name": "analyze", "profiling_lvl": 3, "children": [
-                    { "name": "analyze", "profiling_lvl": 3, "children": [] }
+                    { "name": "analyze", "profiling_lvl": 3, "children": [] },
+                    { "name": "backtrack", "profiling_lvl": 4, "children": [] },
+                    { "name": "collect", "profiling_lvl": 4, "children": [] },
+                    { "name": "bump", "profiling_lvl": 4, "children": [] },
+                    { "name": "decide", "profiling_lvl": 4, "children": [] },
+                    { "name": "shrink", "profiling_lvl": 4, "children": [] },
+                    { "name": "minimize", "profiling_lvl": 4, "children": [] },
+                    { "name": "copy", "profiling_lvl": 4, "children": [] },
+                    { "name": "reduce", "profiling_lvl": 4, "children": [] }
                 ] },
                 { "name": "propstable", "profiling_lvl": 4, "children": [
-                    { "name": "propagate", "profiling_lvl": 4, "children": [] }
+                    { "name": "propagate", "profiling_lvl": 4, "color": "red" ,"children": [] }
                 ] }
             ] },
             { "name": "unstable", "profiling_lvl": 2, "children": [
                 { "name": "analyze", "profiling_lvl": 3, "children": [
-                    { "name": "analyze", "profiling_lvl": 3, "children": [] }
+                    { "name": "analyze", "profiling_lvl": 3, "children": [] },
+                    { "name": "backtrack", "profiling_lvl": 4, "children": [] },
+                    { "name": "collect", "profiling_lvl": 4, "children": [] },
+                    { "name": "bump", "profiling_lvl": 4, "children": [] },
+                    { "name": "decide", "profiling_lvl": 4, "children": [] },
+                    { "name": "shrink", "profiling_lvl": 4, "children": [] },
+                    { "name": "minimize", "profiling_lvl": 4, "children": [] }, 
+                    { "name": "copy", "profiling_lvl": 4, "children": [] },
+                    { "name": "reduce", "profiling_lvl": 4, "children": [] }
                 ] },
                 { "name": "propunstable", "profiling_lvl": 4, "children": [
-                    { "name": "propagate", "profiling_lvl": 4, "children": [] }
+                    { "name": "propagate", "profiling_lvl": 4, "color": "red", "children": [] }
                 ]}
             ] }
         ] },
         { "name": "simplify", "profiling_lvl": 1, "children": [
             { "name": "preprocess", "profiling_lvl": 2, "children": [
                 { "name": "lucky", "profiling_lvl": 2, "children": [] },
-                { "name": "elim", "profiling_lvl": 2, "children": [] }
+                { "name": "elim", "profiling_lvl": 2, "children": [] },
+                { "name": "backbone", "profiling_lvl": 4, "children": [] },
+                { "name": "block", "profiling_lvl": 4, "children": [] },
+                { "name": "vivify", "profiling_lvl": 4, "children": [] },
+                { "name": "compact", "profiling_lvl": 4, "children": [] },
+                { "name": "condition", "profiling_lvl": 4, "children": [] },
+                { "name": "conngruence", "profiling_lvl": 4, "children": [
+                    { "name": "extract", "profiling_lvl": 4, "children": [] }
+                ] },
+                { "name": "connect", "profiling_lvl": 4, "children": [] },
+                { "name": "decompose", "profiling_lvl": 4, "children": [] },
+                { "name": "definition", "profiling_lvl": 4, "children": [] },
+                { "name": "factor", "profiling_lvl": 4, "children": [] },
+                { "name": "instantiate", "profiling_lvl": 4, "children": [] },
+                { "name": "lookahead", "profiling_lvl": 4, "children": [] },
+                { "name": "deduplicate", "profiling_lvl": 4, "children": [] },
+                { "name": "sweep", "profiling_lvl": 4, "children": [] }
+
             ] },
             { "name": "walk", "profiling_lvl": 2, "children": [
                 { "name": "warmup", "profiling_lvl": 3, "children": [] }

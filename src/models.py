@@ -7,6 +7,7 @@ class ProfilingNode:
     lvl: int
     time: float = 0.0
     percentage: float = 0.0
+    color: str = "blue"
     children: list["ProfilingNode"] = field(default_factory=list)
 
 
@@ -16,8 +17,6 @@ class Benchmark:
     solver: str
     profiling_level: int
     root: ProfilingNode | None
-    total_runtime: float
-    total_memory: float
 
 
 @dataclass

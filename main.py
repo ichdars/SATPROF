@@ -11,6 +11,7 @@ def build_parser() -> ArgumentParser:
     parser: ArgumentParser = ArgumentParser()
 
     parser.add_argument("--file", type=Path)
+    parser.add_argument("--filled", action="store_true", default=False, help="Falg to control if the nodes ar filled out with color")
 
     return parser
 
@@ -29,8 +30,8 @@ def main(parser: ArgumentParser):
 
     dot = Digraph()
     dot.attr(rankdir="TB")
-    draw_tree(dot, tree)
-    
+    draw_tree(dot, tree, filled=args.filled)
+
     dot.render("tree", format="png", cleanup=True)
     print("Saved to tree.png")
 

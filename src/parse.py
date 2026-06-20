@@ -1,4 +1,5 @@
 from pathlib import Path
+import pathlib
 
 from .models import *
 from .build_tree import *
@@ -40,6 +41,14 @@ def read_logfile(log: Path) -> list[SolvingStep]:
 
     return res
 
+
+def parse_path(folder: Path) -> list[Path]:
+    res: list[Path] = []
+    p = pathlib.Path(folder)
+    for log in p.glob("*.log"):
+        print(log.name)
+        res.append(log)
+    return res
 
 def create_benchmark(log_path: Path, config: dict, name: str, solver: str, profiling_lvl: int=2):
     steps: list[SolvingStep] = read_logfile(log_path)

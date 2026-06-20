@@ -12,6 +12,7 @@ def build_parser() -> ArgumentParser:
 
     parser.add_argument("--file", type=Path)
     parser.add_argument("--filled", action="store_true", default=False, help="Falg to control if the nodes ar filled out with color")
+    parser.add_argument("--aggregate", type=Path, help="fodler of different benchmarks to be aggregated", action="store")
 
     return parser
 
@@ -20,23 +21,29 @@ def main(parser: ArgumentParser):
 
     args = parser.parse_args()
 
-    steps = read_logfile(args.file)
+    config = Path(__file__).parent / "config" / "config_tree_cadical.json"
 
-    config = Path(__file__).parent / "config" / "config_tree.json"
+    if args.file:
 
-    with open(config) as f:
-        config_tree = json.load(f)
-    tree = compare_log_to_config(steps, config_tree)
+        steps = read_logfile(args.file)
 
-    dot = Digraph()
-    dot.attr(rankdir="TB")
+        with open(config) as f:
+            config_tree = json.load(f)
+        tree = compare_log_to_config(steps, config_tree)
 
-    benchmark: Benchmark = create_benchmark(args.file, config_tree, "a benchmark", "cadical", 4)
+        dot = Digraph()
+        dot.attr(rankdir="TB")
 
-    draw_tree(dot, tree, filled=args.filled, root=benchmark.root)
+        benchmark: Benchmark = create_benchmark(args.file, config_tree, "a benchmark", "cadical", 4)
 
-    dot.render("tree", format="png", cleanup=True)
-    print("Saved to tree.png")
+        draw_tree(dot, tree, filled=args.filled, root=benchmark.root)
+
+        dot.render("tree", format="png", cleanup=True)
+        print("Saved to tree.png")
+
+    if args.aggregate:
+        parse_path(args.aggregate)
+
 
 if __name__ == "__main__":
     parser = build_parser()

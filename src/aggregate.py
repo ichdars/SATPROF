@@ -5,7 +5,7 @@ def dfs_node_name(config: dict) -> list[str]:
     seen: set[str] = set()
     def step(node: dict):
         current_name = node["name"]
-        if current_name not in seen:
+        if current_name in seen:
             return
 
         seen.add(current_name)

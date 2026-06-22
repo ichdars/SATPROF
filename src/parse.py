@@ -42,15 +42,17 @@ def read_logfile(log: Path) -> list[SolvingStep]:
     return res
 
 
-def parse_path(folder: Path) -> list[Path]:
-    res: list[Path] = []
+def parse_path(folder: Path, config_tree: dict) -> list[Benchmark]:
+    res: list[Benchmark] = []
     p = pathlib.Path(folder)
     for log in p.glob("*.log"):
-        print(log.name)
-        res.append(log)
+        benchmark: Benchmark = create_benchmark(log, config_tree, "", "")
+        print(benchmark)
+        res.append(benchmark)
     return res
 
 def create_benchmark(log_path: Path, config: dict, name: str, solver: str, profiling_lvl: int=2):
     steps: list[SolvingStep] = read_logfile(log_path)
+    steps_dict = {s.name: s for s in steps}    
     root: ProfilingNode = compare_log_to_config(steps, config)
-    return Benchmark(name, solver, profiling_lvl, root)
+    return Benchmark(name, solver, profiling_lvl, root, steps_dict)

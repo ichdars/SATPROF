@@ -4,6 +4,7 @@ from pathlib import Path
 from src.parse import *
 from src.draw import *
 from src.build_tree import *
+from src.aggregate import *
 import json
 from graphviz import Digraph
 
@@ -23,12 +24,14 @@ def main(parser: ArgumentParser):
 
     config = Path(__file__).parent / "config" / "config_tree_cadical.json"
 
+    
+    with open(config) as f:
+        config_tree = json.load(f)
+
     if args.file:
 
         steps = read_logfile(args.file)
 
-        with open(config) as f:
-            config_tree = json.load(f)
         tree = compare_log_to_config(steps, config_tree)
 
         dot = Digraph()
@@ -42,7 +45,8 @@ def main(parser: ArgumentParser):
         print("Saved to tree.png")
 
     if args.aggregate:
-        parse_path(args.aggregate)
+        suite: BenchmarkSuite = BenchmarkSuite(parse_path(args.aggregate, config_tree), config_tree)
+        matrix = build_matrix(suite)
 
 
 if __name__ == "__main__":

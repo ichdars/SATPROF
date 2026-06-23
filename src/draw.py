@@ -1,14 +1,17 @@
 import graphviz
+from typing import TypeAlias
 from .models import *
 from .parse import create_benchmark
 import math
 
 
-def label_node(node: ProfilingNode) -> str:
+node: TypeAlias = ProfilingNode | AggregationNode
+
+def label_node(node: node) -> str:
     return f"{node.name}\n{node.time:.2f}s \n{node.percentage:.2f}%"
 
 
-def calc_node_size(node: ProfilingNode, root: ProfilingNode) -> tuple[float, float]:
+def calc_node_size(node: node , root: node) -> tuple[float, float]:
     """
     function to calculate each nodes size relative to the solving time
     """
@@ -20,7 +23,7 @@ def calc_node_size(node: ProfilingNode, root: ProfilingNode) -> tuple[float, flo
     return node_size, font_size
 
 
-def shared_nodes(root: ProfilingNode) -> set[str]:
+def shared_nodes(root: node) -> set[str]:
     """
     function to evaluate which nodes have more then one parent node
     """
@@ -50,7 +53,7 @@ def shared_nodes(root: ProfilingNode) -> set[str]:
     return res
 
 
-def draw_tree(dot, node, parent_id=None, drawn=None, shared=None, filled = False, root: ProfilingNode | None = None):
+def draw_tree(dot, node, parent_id=None, drawn=None, shared=None, filled = False, root: node | None = None):
     """ function to draw the actual DAG, by identifieng which
     node has a single parent and which one has multiple
     drawn = set of strings of already drawn nodes
@@ -70,7 +73,6 @@ def draw_tree(dot, node, parent_id=None, drawn=None, shared=None, filled = False
     if node_id not in drawn:
         drawn.add(node_id)
 
-        
         node_size, font_size = calc_node_size(node, root_node)
         
         if filled:

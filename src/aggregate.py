@@ -25,7 +25,7 @@ def calc_spreading(column: list[float]) -> float:
         return 0.0
     s: list[float] = sorted(column)
     quantile_1: float = statistics.median(s[:len(s)//2])
-    quantile_3: float = statistics.median(s[len(s) + 1 // 2: ])
+    quantile_3: float = statistics.median(s[(len(s) + 1) // 2:])
     return quantile_3 - quantile_1
 
 

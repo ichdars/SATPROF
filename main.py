@@ -24,6 +24,9 @@ def main(parser: ArgumentParser):
 
     config = Path(__file__).parent / "config" / "config_tree_cadical.json"
 
+    dot = Digraph()
+    dot.attr(rankdir="TB")
+
     
     with open(config) as f:
         config_tree = json.load(f)
@@ -32,21 +35,24 @@ def main(parser: ArgumentParser):
 
         steps = read_logfile(args.file)
 
-        tree = compare_log_to_config(steps, config_tree)
-
-        dot = Digraph()
-        dot.attr(rankdir="TB")
+        file_tree = compare_log_to_config(steps, config_tree)
 
         benchmark: Benchmark = create_benchmark(args.file, config_tree, "a benchmark", "cadical", 4)
 
-        draw_tree(dot, tree, filled=args.filled, root=benchmark.root)
+        draw_tree(dot, file_tree, filled=args.filled, root=benchmark.root)
 
-        dot.render("tree", format="png", cleanup=True)
-        print("Saved to tree.png")
 
     if args.aggregate:
         suite: BenchmarkSuite = BenchmarkSuite(parse_path(args.aggregate, config_tree), config_tree)
         matrix = build_matrix(suite)
+
+        aggreagtion_tree: AggregationNode = matrix_to_tree(matrix, config_tree)
+
+        draw_tree(dot, aggreagtion_tree, filled=args.filled, root=aggreagtion_tree)
+    
+
+    dot.render("tree", format="png", cleanup=True)
+    print("Saved to tree.png")
 
 if __name__ == "__main__":
     parser = build_parser()

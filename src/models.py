@@ -18,10 +18,11 @@ class AggregationNode:
     spread: float
     present_count: int
     total_count: int
+    color: str
     time: float = 0.0
     percentage: float = 0.0
-    color: str = "blue"
     children: list["AggregationNode"] = field(default_factory=list)
+    
 
 
 @dataclass
@@ -52,4 +53,10 @@ class ProfileMatrix:
     percent: dict[str, list[float]]
     time: dict[str, list[float]]
     present: dict[str, list[float]]
+
+    def filter_zeros(self, name: str, metric: str = "percent") -> list[float]:
+        """ method to filter out all zero values """
+
+        column: list[float] = self.percent[name] if metric == "percent" else self.time[name]
+        return [val for val, present in zip(column, self.present[name]) if present]
 

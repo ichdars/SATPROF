@@ -46,10 +46,7 @@ def main(parser: ArgumentParser):
 
     if args.aggregate:
         suite: BenchmarkSuite = BenchmarkSuite(parse_path(args.aggregate, config_tree), config_tree)
-        print("config:", type(suite.config), list(suite.config.keys()) if isinstance(suite.config, dict) else suite.config)
-        print("dfs:", dfs_node_name(suite.config))
         matrix = build_matrix(suite)
-
 
 if __name__ == "__main__":
     parser = build_parser()

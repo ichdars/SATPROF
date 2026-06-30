@@ -37,7 +37,7 @@ def build_matrix(suite: BenchmarkSuite) -> ProfileMatrix:
         for benchmark in suite.benchmarks:
             step = benchmark.steps.get(name)
             percent[name].append(step.percentage if step else 0.0)
-            time[name].append(step.percentage if step else 0.0)
+            time[name].append(step.time if step else 0.0)
             is_present[name].append(step is not None)
     return ProfileMatrix(node_order, [benchmark.name for benchmark in suite.benchmarks], percent, time, is_present)
 
@@ -48,7 +48,7 @@ def matrix_to_tree(matrix: ProfileMatrix, config: dict, stat: str = "median") ->
         name: str = config_node["name"]
 
         time_column: list[float] = matrix.filter_zeros(name, "time")
-        percentage_column: list[float] = matrix.filter_zeros(name, "percentage")
+        percentage_column: list[float] = matrix.filter_zeros(name, "percent")
         median_time: float = statistics.median(time_column) if time_column else 0.0
         median_percentage: float = statistics.median(percentage_column) if percentage_column else 0.0
         spreading: float = calc_spreading(percentage_column)

@@ -8,7 +8,11 @@ import math
 node: TypeAlias = ProfilingNode | AggregationNode
 
 def label_node(node: node) -> str:
-    return f"{node.name}\n{node.time:.2f}s \n{node.percentage:.2f}%"
+    if isinstance(node, ProfilingNode):
+        return f"{node.name}\n{node.time:.2f}s \n{node.percentage:.2f}%"
+    if isinstance(node, AggregationNode):
+        return f"{node.name}\n{node.percentage:.2f}% ± {round(node.spread, 1)}\n{(node.present_count)} / {node.total_count}"
+
 
 
 def calc_node_size(node: node , root: node) -> tuple[float, float]:
@@ -16,8 +20,8 @@ def calc_node_size(node: node , root: node) -> tuple[float, float]:
     function to calculate each nodes size relative to the solving time
     """
 
-    frac: float = node.time / root.time if root.time > 0 else 0.0
-    size: float = 3 * frac
+    frac: float = node.percentage / root.percentage if root.time > 0 else 0.0
+    size: float = math.sqrt(3 * frac)
     node_size: float = max(0.5, min(size, 3.5))
     font_size: float = max(10.0, min(25.0, 45.0 * frac))
     return node_size, font_size
@@ -84,7 +88,7 @@ def draw_tree(dot, node, parent_id=None, drawn=None, shared=None, filled = False
                     shape="rectangle",
                     fixedsize="shape",
                     height=f"{node_size:.2f}",
-                    width=f"{node_size * 1.5:.2f}",
+                    width=f"{node_size * 1.75:.2f}",
                     fontsize=f"{font_size:.0f}"
                     )
         else:
@@ -95,7 +99,7 @@ def draw_tree(dot, node, parent_id=None, drawn=None, shared=None, filled = False
                     shape="rectangle",
                     fixedsize="shape",
                     height=f"{node_size:.2f}",
-                    width=f"{node_size * 1.5:.2f}",
+                    width=f"{node_size * 1.75:.2f}",
                     fontsize=f"{font_size:.0f}"
                     )
             

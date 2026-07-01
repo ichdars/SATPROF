@@ -47,6 +47,14 @@ class BenchmarkSuite:
 
 
 @dataclass
+class Outlier:
+    min_run: str
+    max_run: str
+    min_val: float = 0.0
+    max_val: float = 0.0
+
+
+@dataclass
 class ProfileMatrix:
     node_order: list[str]
     benchmarks: list[str]

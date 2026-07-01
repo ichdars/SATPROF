@@ -3,6 +3,7 @@ from typing import Optional
 from .parse import *
 import statistics
 
+
 def dfs_node_name(config: dict) -> list[str]:
     res: list[str] = []
     seen: set[str] = set()
@@ -27,6 +28,28 @@ def calc_spreading(column: list[float]) -> float:
     quantile_1: float = statistics.median(s[:len(s)//2])
     quantile_3: float = statistics.median(s[(len(s) + 1) // 2:])
     return quantile_3 - quantile_1
+
+
+def filter_outliers(matrix: ProfileMatrix) -> dict[str, Outlier]:
+    res: dict[str, Outlier] = {}
+
+    for node in matrix.node_order:
+
+        minimum, maximum = 101, -0.1
+        min_run, max_run = "", ""
+
+        vals: list[float] = matrix.percent[node]
+
+        for index, val in enumerate(vals):
+            if val < minimum:
+                minimum = val
+                min_run = matrix.benchmarks[index]
+            if val > maximum:
+                maximum = val
+                max_run = matrix.benchmarks[index]
+        res[node] = Outlier(min_run, max_run, minimum, maximum)
+
+    return res
 
 
 def build_matrix(suite: BenchmarkSuite) -> ProfileMatrix:

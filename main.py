@@ -12,7 +12,6 @@ def build_parser() -> ArgumentParser:
     parser: ArgumentParser = ArgumentParser()
 
     parser.add_argument("--file", type=Path)
-    parser.add_argument("--filled", action="store_true", default=False, help="Falg to control if the nodes ar filled out with color")
     parser.add_argument("--aggregate", type=Path, help="fodler of different benchmarks to be aggregated", action="store")
 
     return parser
@@ -39,7 +38,7 @@ def main(parser: ArgumentParser):
 
         benchmark: Benchmark = create_benchmark(args.file, config_tree, "a benchmark", "cadical", 4)
 
-        draw_tree(dot, file_tree, filled=args.filled, root=benchmark.root)
+        draw_tree(dot, file_tree, root=benchmark.root)
 
 
     if args.aggregate:
@@ -48,7 +47,9 @@ def main(parser: ArgumentParser):
 
         aggreagtion_tree: AggregationNode = matrix_to_tree(matrix, config_tree)
 
-        draw_tree(dot, aggreagtion_tree, filled=args.filled, root=aggreagtion_tree)
+        outliers = filter_outliers(matrix)
+
+        draw_tree(dot, aggreagtion_tree, outliers, root=aggreagtion_tree)
     
 
     dot.render("tree", format="png", cleanup=True)

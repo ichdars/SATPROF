@@ -52,6 +52,14 @@ def filter_outliers(matrix: ProfileMatrix) -> dict[str, Outlier]:
     return res
 
 
+def write_outliers(outliers: dict[str, Outlier], path: Path = Path("outliers.txt")) -> None:
+    with path.open("w", encoding="utf-8") as file:
+        for node, outlier in outliers.items():
+            file.write(f"{node}: min={outlier.min_val:.2f}% ({outlier.min_run}), max={outlier.max_val:.2f}% ({outlier.max_run})\n")
+    return
+
+
+
 def build_matrix(suite: BenchmarkSuite) -> ProfileMatrix:
     node_order: list[str] = dfs_node_name(suite.config)
     percent, time, is_present = {}, {}, {}
@@ -86,6 +94,6 @@ def matrix_to_tree(matrix: ProfileMatrix, config: dict, stat: str = "median") ->
             color=config_node.get("color", "blue"),
             time=median_time, 
             percentage=median_percentage,
-            children=children,
+            children=children, # type: ignore
             )
     return build(config)

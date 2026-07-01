@@ -1,5 +1,6 @@
 from typing import TypeAlias, Optional
 from .models import *
+from .aggregate import write_outliers
 from .parse import create_benchmark
 import math
 
@@ -115,6 +116,8 @@ def draw_tree(dot, node, outliers: dict[str, Outlier] = {}, parent_id=None, draw
                 shared=shared,
                 root=root_node,
             )
+    
+    write_outliers(outliers)
 
     if parent_id is not None:
         dot.edge(parent_id, node_id)

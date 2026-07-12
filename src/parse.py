@@ -6,7 +6,7 @@ from .build_tree import *
 import re
 
 def read_logfile(log: Path) -> list[SolvingStep]:
-    pattern = re.compile(r"c\s+(\d+\.\d+)\s+(\d+\.\d+)%\s+(\w+)")
+    pattern = re.compile(r"c\s+(\d+\.\d+)\s+(\d+\.\d+)\s*%\s+(\w+)")
     res: list[SolvingStep] = []
 
     right_block: bool = False
@@ -18,7 +18,7 @@ def read_logfile(log: Path) -> list[SolvingStep]:
             line = line.strip()
 
 
-            if "[ run-time profiling ]" in line:
+            if " profiling " in line:
                 right_block = True
                 is_valid_benchmark = True
                 continue

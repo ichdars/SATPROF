@@ -1,0 +1,6 @@
+{
+    "solver": "kissat",
+    "children": [
+        "Im a kissat children"
+    ]
+}

@@ -1,6 +1,7 @@
 {
     "name": "solve",
     "profiling_lvl": 0,
+    "solver": "cadical",
     "children": [
         { "name": "parse", "profiling_lvl": 0, "children": [] },
         { "name": "check", "profiling_lvl": 2, "children": [] },

@@ -24,8 +24,6 @@ def main(parser: ArgumentParser):
 
     config = load_configs(Path(__file__).parent / "configs")[args.solver]
 
-    print(config)
-
     dot = Digraph()
     dot.attr(rankdir="TB")
 

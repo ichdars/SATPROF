@@ -27,6 +27,16 @@ def calc_node_size(node: node, root: node) -> tuple[float, float]:
     return node_size, font_size
 
 
+def calc_edge_width(child: node, root: node) -> float:
+    """
+    function to calculate each edges width relative to the solving percentage
+    """
+
+    frac: float = child.percentage / root.percentage if root.percentage > 0.0 else 0.0
+    width: float = math.sqrt(3 * frac)
+    return max(0.5, min(width, 5.0))
+
+
 def shared_nodes(root: node) -> set[str]:
     """
     function to evaluate which nodes have more then one parent node
@@ -120,4 +130,5 @@ def draw_tree(dot, node, outliers: dict[str, Outlier] = {}, parent_id=None, draw
     write_outliers(outliers)
 
     if parent_id is not None:
-        dot.edge(parent_id, node_id)
+        edge_width = calc_edge_width(node, root_node)
+        dot.edge(parent_id, node_id, penwidth=f"{edge_width:.2f}")

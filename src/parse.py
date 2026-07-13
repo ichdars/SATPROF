@@ -52,7 +52,7 @@ def parse_path(folder: Path, config_tree: dict) -> list[Benchmark]:
     p = pathlib.Path(folder)
     for log in p.glob("*.log"):
         try:
-            benchmark: Benchmark = create_benchmark(log, config_tree, log.stem, "cadical")
+            benchmark: Benchmark = create_benchmark(log, config_tree, log.stem, config_tree["solver"])
         except:
             continue
         res.append(benchmark)

@@ -126,8 +126,6 @@ def draw_tree(dot, node, outliers: dict[str, Outlier] = {}, parent_id=None, draw
                 shared=shared,
                 root=root_node,
             )
-    
-    write_outliers(outliers)
 
     if parent_id is not None:
         edge_width = calc_edge_width(node, root_node)

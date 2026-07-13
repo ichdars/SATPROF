@@ -2,9 +2,9 @@
 
 
 use the script on a file with:
-./main.py --file <filename>.log
+./main.py --file <filename>.log --solver <solvername>
 
 
 use the script on a folder of runs:
-./main.py --aggregate <foldername>.log
+./main.py --aggregate <foldername>.log --solver <solvername>
 

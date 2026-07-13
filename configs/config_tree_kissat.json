@@ -1,6 +1,408 @@
 {
+    "name": "total",
+    "profiling_lvl": 0,
     "solver": "kissat",
     "children": [
-        "Im a kissat children"
+        {
+            "name": "search",
+            "profiling_lvl": 0,
+            "children": [
+                {
+                    "name": "stable",
+                    "profiling_lvl": 0,
+                    "children": [
+                        {
+                            "name": "propagate",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "decide",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "restart",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "rephase",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "reduce",
+                            "profiling_lvl": 0,
+                            "children": [
+                                {
+                                    "name": "collect",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": "analyze",
+                            "profiling_lvl": 0,
+                            "children": [
+                                {
+                                    "name": "minimize",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                },
+                                {
+                                    "name": "shrink",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                },
+                                {
+                                    "name": "bump",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "focused",
+                    "profiling_lvl": 0,
+                    "children": [
+                        {
+                            "name": "propagate",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "decide",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "restart",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "rephase",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "reduce",
+                            "profiling_lvl": 0,
+                            "children": [
+                                {
+                                    "name": "collect",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": "analyze",
+                            "profiling_lvl": 0,
+                            "children": [
+                                {
+                                    "name": "minimize",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                },
+                                {
+                                    "name": "shrink",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                },
+                                {
+                                    "name": "bump",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "simplify",
+                    "profiling_lvl": 0,
+                    "children": [
+                        {
+                            "name": "eliminate",
+                            "profiling_lvl": 0,
+                            "children": [
+                                {
+                                    "name": "definition",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": "probe",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "vivify",
+                            "profiling_lvl": 0,
+                            "children": [
+                                {
+                                    "name": "vivifysort",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                },
+                                {
+                                    "name": "vivify0",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                },
+                                {
+                                    "name": "vivify1",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                },
+                                {
+                                    "name": "vivify2",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": "substitute",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "transitive",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "backbone",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "deduce",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "subsume",
+                            "profiling_lvl": 0,
+                            "children": [
+                                {
+                                    "name": "forward",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": "geep",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "factor",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "sweep",
+                            "profiling_lvl": 0,
+                            "children": [
+                                {
+                                    "name": "sweepbackbone",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                },
+                                {
+                                    "name": "sweepequivalences",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": "congruence",
+                            "profiling_lvl": 0,
+                            "children": [
+                                {
+                                    "name": "extract",
+                                    "profiling_lvl": 0,
+                                    "children": [
+                                        {
+                                            "name": "extractands",
+                                            "profiling_lvl": 0,
+                                            "children": []
+                                        },
+                                        {
+                                            "name": "extractbinaries",
+                                            "profiling_lvl": 0,
+                                            "children": []
+                                        },
+                                        {
+                                            "name": "extractites",
+                                            "profiling_lvl": 0,
+                                            "children": []
+                                        },
+                                        {
+                                            "name": "extractxors",
+                                            "profiling_lvl": 0,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "matching",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                },
+                                {
+                                    "name": "merge",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "preprocess",
+                    "profiling_lvl": 0,
+                    "children": [
+                        {
+                            "name": "eliminate",
+                            "profiling_lvl": 0,
+                            "children": [
+                                {
+                                    "name": "definition",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": "factor",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "substitute",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "sweep",
+                            "profiling_lvl": 0,
+                            "children": [
+                                {
+                                    "name": "sweepbackbone",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                },
+                                {
+                                    "name": "sweepequivalences",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": "congruence",
+                            "profiling_lvl": 0,
+                            "children": [
+                                {
+                                    "name": "extract",
+                                    "profiling_lvl": 0,
+                                    "children": [
+                                        {
+                                            "name": "extractands",
+                                            "profiling_lvl": 0,
+                                            "children": []
+                                        },
+                                        {
+                                            "name": "extractbinaries",
+                                            "profiling_lvl": 0,
+                                            "children": []
+                                        },
+                                        {
+                                            "name": "extractites",
+                                            "profiling_lvl": 0,
+                                            "children": []
+                                        },
+                                        {
+                                            "name": "extractxors",
+                                            "profiling_lvl": 0,
+                                            "children": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "matching",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                },
+                                {
+                                    "name": "merge",
+                                    "profiling_lvl": 0,
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "sort",
+                    "profiling_lvl": 0,
+                    "children": [
+                        {
+                            "name": "vivifysort",
+                            "profiling_lvl": 0,
+                            "children": []
+                        },
+                        {
+                            "name": "radix",
+                            "profiling_lvl": 0,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "walking",
+                    "profiling_lvl": 0,
+                    "children": [
+                        {
+                            "name": "warmup",
+                            "profiling_lvl": 0,
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "lucky",
+                    "profiling_lvl": 0,
+                    "children": []
+                },
+                {
+                    "name": "parse",
+                    "profiling_lvl": 0,
+                    "children": []
+                },
+                {
+                    "name": "defrag",
+                    "profiling_lvl": 0,
+                    "children": []
+                },
+                {
+                    "name": "reorder",
+                    "profiling_lvl": 0,
+                    "children": []
+                }
+            ]
+        }
     ]
-}
+}   

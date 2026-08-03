@@ -3,6 +3,7 @@ import pathlib
 
 from .models import *
 from .build_tree import *
+from aggregate import build_matrix
 import re
 
 def read_logfile(log: Path) -> list[SolvingStep]:
@@ -63,3 +64,8 @@ def create_benchmark(log_path: Path, config: dict, name: str, solver: str, profi
     steps_dict = {s.name: s for s in steps}
     root: ProfilingNode = compare_log_to_config(steps, config)
     return Benchmark(name, solver, profiling_lvl, root, steps_dict)
+
+
+def load_suite(folder: Path, config: dict) -> tuple[BenchmarkSuite, ProfileMatrix]:
+    suite: BenchmarkSuite = BenchmarkSuite(parse_path(folder, config), config)
+    return suite, build_matrix(suite)

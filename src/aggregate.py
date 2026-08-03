@@ -37,16 +37,29 @@ def filter_outliers(matrix: ProfileMatrix) -> dict[str, Outlier]:
 
         minimum, maximum = 101, -0.1
         min_run, max_run = "", ""
+        found: bool = False
 
         vals: list[float] = matrix.percent[node]
 
-        for index, val in enumerate(vals):
+        for val, present, benchmark in zip(matrix.percent[node],
+                                            matrix.present[node],
+                                            matrix.benchmarks
+                                            ):
+            if not present:
+                continue
+
+            found = True
+
             if val < minimum:
                 minimum = val
-                min_run = matrix.benchmarks[index]
+                min_run = benchmark
             if val > maximum:
                 maximum = val
-                max_run = matrix.benchmarks[index]
+                max_run = benchmark
+            
+        if not found:
+            minimum, maximum = 0.0, 0.0
+
         res[node] = Outlier(min_run, max_run, minimum, maximum)
 
     return res

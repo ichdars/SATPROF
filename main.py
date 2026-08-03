@@ -14,6 +14,7 @@ def build_parser() -> ArgumentParser:
     parser.add_argument("--file", type=Path)
     parser.add_argument("--aggregate", type=Path, help="fodler of different benchmarks to be aggregated", action="store")
     parser.add_argument("--solver", type=str, help="folder this benchmark is creatd by")
+    parser.add_argument("--output", "--o", type=Path, default=Path("output"), help="Basisverzeichnis für Ausgabedateien (Standard: output/)")
 
     return parser
 
@@ -23,6 +24,8 @@ def main(parser: ArgumentParser):
     args = parser.parse_args()
 
     config = load_configs(Path(__file__).parent / "configs")[args.solver]
+
+    base_output: Path = args.output.expanduser()
 
     dot = Digraph()
     dot.attr(rankdir="TB")
@@ -55,7 +58,7 @@ def main(parser: ArgumentParser):
         outliers = filter_outliers(matrix)
 
         save = f"{args.aggregate.stem}_{args.solver}_tree"
-        save_dir: Path = Path("output/suites") / save
+        save_dir: Path = base_output / "suites" / save
         save_dir.mkdir(parents=True, exist_ok=True)
 
         draw_tree(dot, aggreagtion_tree, outliers, root=aggreagtion_tree)
@@ -63,7 +66,7 @@ def main(parser: ArgumentParser):
 
         dot.render(save, save_dir, format="png", cleanup=True)
 
-        print(f"Saved to output/suites/{save}.png")
+        print(f"Saved to {save_dir}/{save}.png")
 
 if __name__ == "__main__":
     parser = build_parser()

@@ -3,7 +3,7 @@ import pathlib
 
 from .models import *
 from .build_tree import *
-from aggregate import build_matrix
+from .aggregate import build_matrix
 import re
 
 def read_logfile(log: Path) -> list[SolvingStep]:
@@ -35,11 +35,11 @@ def read_logfile(log: Path) -> list[SolvingStep]:
 
                     time = float(match.group(1))
 
-                    memory = float(match.group(2))
+                    percentage = float(match.group(2))
 
                     name = str(match.group(3))
 
-                    res.append(SolvingStep(name, time, memory))
+                    res.append(SolvingStep(name, time, percentage))
 
 
         if not is_valid_benchmark:
@@ -55,7 +55,7 @@ def parse_path(folder: Path, config_tree: dict) -> list[Benchmark]:
         try:
             benchmark: Benchmark = create_benchmark(log, config_tree, log.stem, config_tree["solver"])
         except:
-            continue
+            ValueError()
         res.append(benchmark)
     return res
 

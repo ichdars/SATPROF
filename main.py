@@ -5,6 +5,7 @@ from src.parse import *
 from src.draw import *
 from src.build_tree import *
 from src.aggregate import *
+from src.plot import plot_distributions
 import json
 from graphviz import Digraph
 
@@ -15,6 +16,7 @@ def build_parser() -> ArgumentParser:
     parser.add_argument("--aggregate", type=Path, help="fodler of different benchmarks to be aggregated", action="store")
     parser.add_argument("--solver", type=str, help="folder this benchmark is creatd by")
     parser.add_argument("--output", "--o", type=Path, default=Path("output"), help="Basisverzeichnis für Ausgabedateien (Standard: output/)")
+    parser.add_argument("--dist", action="store_true", help="distribution plot for a benhmarksuite")
 
     return parser
 
@@ -55,11 +57,19 @@ def main(parser: ArgumentParser):
 
         aggreagtion_tree: AggregationNode = matrix_to_tree(matrix, config)
 
-        outliers = filter_outliers(matrix)
-
         save = f"{args.aggregate.stem}_{args.solver}_tree"
         save_dir: Path = base_output / "suites" / save
         save_dir.mkdir(parents=True, exist_ok=True)
+
+
+        if args.dist:
+            figure = plot_distributions(matrix)
+            dist_path = save_dir / f"{save}_dist.png"
+            figure.savefig(dist_path, dpi=150) # type: ignore
+            plt.close(figure)
+
+
+        outliers = filter_outliers(matrix)
 
         draw_tree(dot, aggreagtion_tree, outliers, root=aggreagtion_tree)
         write_outliers(outliers, save_dir / f"{save}_outliers.txt")

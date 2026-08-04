@@ -5,7 +5,7 @@ from src.parse import *
 from src.draw import *
 from src.build_tree import *
 from src.aggregate import *
-from src.plot import plot_distributions
+from src.plot import *
 import json
 from graphviz import Digraph
 

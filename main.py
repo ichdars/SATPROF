@@ -25,8 +25,8 @@ def main(parser: ArgumentParser):
 
     args = parser.parse_args()
 
-    config = load_configs(Path(__file__).parent / "configs")[args.solver]
-
+    configs = load_configs(Path(__file__).parent / "configs")
+    config, solver = pick_config(configs, args.solver, args.file or args.aggregate)
     base_output: Path = args.output.expanduser()
 
     dot = Digraph()

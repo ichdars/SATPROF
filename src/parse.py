@@ -7,6 +7,9 @@ from .build_tree import *
 from .aggregate import build_matrix
 import re
 
+SOLVER_BANNER = re.compile(r"^c\s+(\S+)\s+SAT\s+SOLVER", re.IGNORECASE)
+
+
 def read_logfile(log: Path) -> list[SolvingStep]:
     pattern = re.compile(r"c\s+(\d+\.\d+)\s+(\d+\.\d+)\s*%\s+(\w+)")
     res: list[SolvingStep] = []
@@ -55,9 +58,9 @@ def parse_path(folder: Path, config_tree: dict) -> list[Benchmark]:
     for log in p.glob("*.log"):
         try:
             benchmark: Benchmark = create_benchmark(log, config_tree, log.stem, config_tree["solver"])
+            res.append(benchmark)
         except:
             ValueError()
-        res.append(benchmark)
     return res
 
 def create_benchmark(log_path: Path, config: dict, name: str, solver: str, profiling_lvl: int=2):
@@ -127,3 +130,30 @@ def pick_config(configs: dict[str, dict], solver: Optional[str], src: Path) -> t
         raise ValueError(f"could not find a solver from {log.stem}",
                          f"use --solver ( known: { ', '.join(known) })")
     return configs[found], found
+
+
+def banner_solver(log: Path, max_lines: int = 40) -> Optional[str]:
+
+    with log.open("r", encoding="utf-8", errors="replace") as file:
+        for index, line in enumerate(file):
+            if index >= max_lines:
+                break
+
+            match = SOLVER_BANNER.match(line.strip())
+
+            if match:
+                return match.group(1).lower()
+        return None
+
+def verify_solver(log: Path, config: dict) -> None:
+
+    expected: str = config["solver"].lower()
+    found: Optional[str] = banner_solver(log)
+
+    if found is None:
+        print(f"warning: no solvername in {log.stem}, expected: {expected}")
+        return 
+
+    if found != expected:
+        raise ValueError(f"{log.stem} was produced by {found}, but the config is for {expected}")
+        

@@ -27,6 +27,12 @@ def main(parser: ArgumentParser):
 
     configs = load_configs(Path(__file__).parent / "configs")
     config, solver = pick_config(configs, args.solver, args.file or args.aggregate)
+
+    first_log = pick_first_log(args.file or args.aggregate)
+
+    if first_log is not None:
+        verify_solver(first_log, config)
+
     base_output: Path = args.output.expanduser()
 
     dot = Digraph()

@@ -45,7 +45,7 @@ def plot_distributions(matrix: ProfileMatrix, jitter=0.075, seed=0):
         
     for position, column in zip(pos, data):
         x = [position + rng.gauss(0.0, jitter) for _ in column]
-        axes.scatter(x, column, s=13, color="#3A6B8A", alpha=0.2, linewidths=0, zorder=3)
+        axes.scatter(x, column, s=13, marker="_" ,color="#3A6B8A", alpha=0.2, linewidths=0, zorder=3)
         
     axes.set_yscale("symlog", linthresh=1.0)
     axes.set_xticks(pos)

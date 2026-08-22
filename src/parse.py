@@ -2,8 +2,9 @@ from pathlib import Path
 import pathlib
 from typing import Iterable, Optional
 
-from .models import *
-from .build_tree import *
+import sys
+from .models import SolvingStep, SatProfError, Benchmark, LogFileError, BenchmarkSuite, ProfilingNode, ProfileMatrix
+from .build_tree import compare_log_to_config
 from .aggregate import build_matrix
 import re
 
@@ -18,7 +19,7 @@ def read_logfile(log: Path) -> list[SolvingStep]:
     is_valid_benchmark: bool = False
 
 
-    with log.open("r", encoding="utf-8") as file:
+    with log.open("r", encoding="utf-8", errors="replace") as file:
         for line in file:
             line = line.strip()
 
@@ -44,25 +45,38 @@ def read_logfile(log: Path) -> list[SolvingStep]:
                     name = str(match.group(3))
 
                     res.append(SolvingStep(name, time, percentage))
-        if res == []:
-            raise SatProfError("no solvingsteps available")
-
 
         if not is_valid_benchmark:
-            raise SatProfError(f"didnt find profiling block in {log.stem}")
+            raise LogFileError(f"didnt find profiling block in {log.stem}")
+
+        if res == []:
+            raise LogFileError("no solvingsteps available")
+
 
     return res
 
 
 def parse_path(folder: Path, config_tree: dict) -> list[Benchmark]:
     res: list[Benchmark] = []
+    skipped: list[str] = []
     p = pathlib.Path(folder)
-    for log in p.glob("*.log"):
+    logs = p.glob("*.log")
+
+    if not logs:
+        raise SatProfError(f"no log file found in p: {p}")
+
+    for log in logs:
         try:
             benchmark: Benchmark = create_benchmark(log, config_tree, log.stem, config_tree["solver"])
             res.append(benchmark)
-        except:
-            ValueError(f"Invalid benchmark: {log}")
+        except LogFileError as e:
+            skipped.append(str(e))
+    for skip in skipped:
+        print(f"warning: skipped {skip}", file=sys.stderr)
+
+    if not res:
+        raise SatProfError(f"no usable lofile in {p}")
+
     return res
 
 def create_benchmark(log_path: Path, config: dict, name: str, solver: str, profiling_lvl: int=2):
@@ -112,7 +126,7 @@ def pick_config(configs: dict[str, dict], solver: Optional[str], src: Path) -> t
     found: Optional[str] = detect_solver(log, known)
     if found is None: 
         raise SatProfError(f"could not find a solver from {log.stem}""\n"
-                          "use --solver ( known: { ', '.join(known) })")
+                           f"use --solver ( known: { ', '.join(known) })")
     return configs[found], found
 
 
@@ -139,5 +153,5 @@ def verify_solver(log: Path, config: dict) -> None:
         return 
 
     if found != expected:
-        raise ValueError(f"{log.stem} was produced by {found}, but the config is for {expected}")
+        raise LogFileError(f"{log.stem} was produced by {found}, but the config is for {expected}")
         

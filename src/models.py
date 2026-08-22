@@ -63,11 +63,14 @@ class ProfileMatrix:
     present: dict[str, list[bool]]
 
     def filter_absents(self, name: str, metric: str = "percent") -> list[float]:
-        """ method to filter out all zero values """
+        """ method to filter out all absent values """
 
         column: list[float] = self.percent[name] if metric == "percent" else self.time[name]
         return [val for val, present in zip(column, self.present[name]) if present]
 
 
 class SatProfError(Exception):
+    pass
+
+class LogFileError(SatProfError):
     pass

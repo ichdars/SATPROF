@@ -1,6 +1,6 @@
 import json
 
-from .models import *
+from .models import SolvingStep, ProfilingNode, SatProfError
 import pathlib
 
 def config_to_profiling(config_node: dict, steps: dict[str, SolvingStep]) -> ProfilingNode:
@@ -35,8 +35,8 @@ def load_configs(configs: pathlib.Path) -> dict[str, dict]:
             config = json.load(file)
             name = config.get("solver")        
             if name is None:
-                raise ValueError()
+                raise SatProfError()
             if name in res:
-                raise ValueError("Solver is already configurated")
+                raise SatProfError("Solver is already configurated")
             res[name] = config
     return res

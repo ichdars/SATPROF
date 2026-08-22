@@ -2,7 +2,7 @@ from typing import Optional
 from pathlib import Path
 from math import inf
 
-from .models import *
+from .models import BenchmarkSuite, ProfileMatrix, Outlier, AggregationNode
 import statistics
 
 
@@ -40,8 +40,6 @@ def filter_outliers(matrix: ProfileMatrix) -> dict[str, Outlier]:
         minimum, maximum = inf, -inf
         min_run, max_run = "", ""
         found: bool = False
-
-        vals: list[float] = matrix.percent[node]
 
         for val, present, benchmark in zip(matrix.percent[node],
                                             matrix.present[node],
@@ -89,7 +87,7 @@ def build_matrix(suite: BenchmarkSuite) -> ProfileMatrix:
     return ProfileMatrix(node_order, [benchmark.name for benchmark in suite.benchmarks], percent, time, is_present)
 
 
-def matrix_to_tree(matrix: ProfileMatrix, config: dict, stat: str = "median") -> AggregationNode:
+def matrix_to_tree(matrix: ProfileMatrix, config: dict) -> AggregationNode:
 
     def build(config_node: dict):
         name: str = config_node["name"]
@@ -110,6 +108,6 @@ def matrix_to_tree(matrix: ProfileMatrix, config: dict, stat: str = "median") ->
             color=config_node.get("color", "blue"),
             time=median_time, 
             percentage=median_percentage,
-            children=children, # type: ignore
+            children=children,
             )
     return build(config)

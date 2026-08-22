@@ -1,4 +1,4 @@
-from .models import *
+from .models import ProfileMatrix, SatProfError
 import random
 
 import matplotlib
@@ -16,6 +16,9 @@ def plot_distributions(matrix: ProfileMatrix, jitter=0.075, seed=0):
             continue
         names.append(node)
         data.append(col)
+
+    if not data:
+        raise SatProfError("no given data")
 
     fig, axes = plt.subplots(figsize=(1.05 * len(names) + 2.5, 6.5),
                                 constrained_layout=True)

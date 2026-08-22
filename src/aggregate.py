@@ -1,5 +1,6 @@
 from typing import Optional
 from pathlib import Path
+from math import inf
 
 from .models import *
 import statistics
@@ -36,7 +37,7 @@ def filter_outliers(matrix: ProfileMatrix) -> dict[str, Outlier]:
 
     for node in matrix.node_order:
 
-        minimum, maximum = 101, -0.1
+        minimum, maximum = inf, -inf
         min_run, max_run = "", ""
         found: bool = False
 
@@ -93,8 +94,8 @@ def matrix_to_tree(matrix: ProfileMatrix, config: dict, stat: str = "median") ->
     def build(config_node: dict):
         name: str = config_node["name"]
 
-        time_column: list[float] = matrix.filter_zeros(name, "time")
-        percentage_column: list[float] = matrix.filter_zeros(name, "percent")
+        time_column: list[float] = matrix.filter_absents(name, "time")
+        percentage_column: list[float] = matrix.filter_absents(name, "percent")
         median_time: float = statistics.median(time_column) if time_column else 0.0
         median_percentage: float = statistics.median(percentage_column) if percentage_column else 0.0
         spreading: float = calc_spreading(percentage_column)

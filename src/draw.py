@@ -13,6 +13,7 @@ def label_node(node: node, min: float = 0, max: float = 0) -> str:
         return f"{node.name}\n{node.time:.2f}s \n{node.percentage:.2f}%"
     if isinstance(node, AggregationNode):
         return f"{node.name}\n{node.percentage:.2f}%\n ({min};{max}) \n{(node.present_count)} / {node.total_count}"
+    return ""
 
 
 def calc_node_size(node: node, root: node) -> tuple[float, float]:

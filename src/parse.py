@@ -44,10 +44,12 @@ def read_logfile(log: Path) -> list[SolvingStep]:
                     name = str(match.group(3))
 
                     res.append(SolvingStep(name, time, percentage))
+        if res == []:
+            raise SatProfError("no solvingsteps available")
 
 
         if not is_valid_benchmark:
-            raise ValueError(f"didnt find profiling block in {log.stem}")
+            raise SatProfError(f"didnt find profiling block in {log.stem}")
 
     return res
 
@@ -83,10 +85,14 @@ def detect_solver(log: Path, seen: Iterable[str]) -> Optional[str]:
 
 
 def pick_first_log(folder: Path) -> Optional[Path]:
-
+    if not folder.exists():
+        raise SatProfError(f"Path does not exist: {folder}")
     if folder.is_file():
         return folder
-    return next(folder.glob("*.log"), None)
+    log =  next(folder.glob("*.log"), None)
+    if log is None:
+        raise SatProfError(f"no .log-file found in: {folder} ")
+    return log
 
 
 def pick_config(configs: dict[str, dict], solver: Optional[str], src: Path) -> tuple[dict, str]:
@@ -95,17 +101,17 @@ def pick_config(configs: dict[str, dict], solver: Optional[str], src: Path) -> t
 
     if solver:
         if solver not in configs: 
-            raise ValueError(f"no valid config for solver {solver}, know: {', '.join(known)}")
+            raise SatProfError(f"no valid config for solver {solver}, know: {', '.join(known)}")
 
         return configs[solver], solver
 
     log: Optional[Path] = pick_first_log(src)
     if log is None:
-        raise ValueError(f"no valid logfile found in {src}")
+        raise SatProfError(f"no valid logfile found in {src}")
 
     found: Optional[str] = detect_solver(log, known)
     if found is None: 
-        raise ValueError(f"could not find a solver from {log.stem}""\n"
+        raise SatProfError(f"could not find a solver from {log.stem}""\n"
                           "use --solver ( known: { ', '.join(known) })")
     return configs[found], found
 

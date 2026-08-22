@@ -7,7 +7,8 @@ from src.build_tree import *
 from src.aggregate import *
 from src.plot import *
 import json
-from graphviz import Digraph
+from graphviz import Digraph, ExecutableNotFound
+import sys
 
 def build_parser() -> ArgumentParser:
     parser: ArgumentParser = ArgumentParser()
@@ -86,4 +87,10 @@ def main(parser: ArgumentParser):
 
 if __name__ == "__main__":
     parser = build_parser()
-    main(parser)
+    try:
+        main(parser)
+    except SatProfError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+    except ExecutableNotFound:
+        print("Error: Graphviz executable not found. Please ensure Graphviz is installed and added to your system's PATH.", file=sys.stderr)

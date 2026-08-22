@@ -3,7 +3,7 @@ import json
 from .models import *
 import pathlib
 
-def config_to_profling(config_node: dict, steps: dict[str, SolvingStep]) -> ProfilingNode:
+def config_to_profiling(config_node: dict, steps: dict[str, SolvingStep]) -> ProfilingNode:
     name: str = config_node["name"]
     children: list[ProfilingNode] = []
     ellapsed_time: float = 0.0
@@ -15,7 +15,7 @@ def config_to_profling(config_node: dict, steps: dict[str, SolvingStep]) -> Prof
 
     for child in config_node.get("children", []):
         if child["name"] in steps:  
-            children.append(config_to_profling(child, steps))
+            children.append(config_to_profiling(child, steps))
     
     color = config_node.get("color", "blue")
     
@@ -24,7 +24,7 @@ def config_to_profling(config_node: dict, steps: dict[str, SolvingStep]) -> Prof
 
 def compare_log_to_config(steps: list[SolvingStep], config: dict):
     steps_dict = {step.name: step for step in steps}
-    return  config_to_profling(config, steps_dict)
+    return  config_to_profiling(config, steps_dict)
 
 
 def load_configs(configs: pathlib.Path) -> dict[str, dict]:

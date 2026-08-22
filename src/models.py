@@ -60,11 +60,14 @@ class ProfileMatrix:
     benchmarks: list[str]
     percent: dict[str, list[float]]
     time: dict[str, list[float]]
-    present: dict[str, list[float]]
+    present: dict[str, list[bool]]
 
-    def filter_zeros(self, name: str, metric: str = "percent") -> list[float]:
+    def filter_absents(self, name: str, metric: str = "percent") -> list[float]:
         """ method to filter out all zero values """
 
         column: list[float] = self.percent[name] if metric == "percent" else self.time[name]
         return [val for val, present in zip(column, self.present[name]) if present]
 
+
+class SatProfError(Exception):
+    pass

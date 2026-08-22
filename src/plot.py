@@ -11,7 +11,7 @@ def plot_distributions(matrix: ProfileMatrix, jitter=0.075, seed=0):
     names: list[str] = []
     data: list[list[float]] = []
     for node in matrix.node_order[1: ]:
-        col: list[float] = matrix.filter_zeros(node)
+        col: list[float] = matrix.filter_absents(node)
         if not col:
             continue
         names.append(node)

@@ -1,6 +1,7 @@
 from typing import Optional
+from pathlib import Path
 
-from .parse import *
+from .models import *
 import statistics
 
 
@@ -68,7 +69,8 @@ def filter_outliers(matrix: ProfileMatrix) -> dict[str, Outlier]:
 def write_outliers(outliers: dict[str, Outlier], path: Path = Path("outliers.txt")) -> None:
     with path.open("w", encoding="utf-8") as file:
         for node, outlier in outliers.items():
-            file.write(f"{node}: min={outlier.min_val:.2f}% ({outlier.min_run}), max={outlier.max_val:.2f}% ({outlier.max_run})\n")
+            if node != "total":
+                file.write(f"{node}: min={outlier.min_val:.2f}% ({outlier.min_run}), max={outlier.max_val:.2f}% ({outlier.max_run})\n")
     return
 
 

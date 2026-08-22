@@ -60,7 +60,7 @@ def parse_path(folder: Path, config_tree: dict) -> list[Benchmark]:
             benchmark: Benchmark = create_benchmark(log, config_tree, log.stem, config_tree["solver"])
             res.append(benchmark)
         except:
-            ValueError()
+            ValueError(f"Invalid benchmark: {log}")
     return res
 
 def create_benchmark(log_path: Path, config: dict, name: str, solver: str, profiling_lvl: int=2):
@@ -75,33 +75,11 @@ def load_suite(folder: Path, config: dict) -> tuple[BenchmarkSuite, ProfileMatri
     return suite, build_matrix(suite)
 
 
-def detect_solver(log: Path, seen: Iterable[str], max_lines: int = 120) -> Optional[str]:
-    solver_names: list[str] = sorted(seen, key=len, reverse=True)
-
-    first: list[str] = []
-    start: Optional[int] = None
-
-    with log.open("r", encoding="utf-8", errors="replace") as file:
-        for index, line in enumerate(file):
-            if index >= max_lines:
-                break
-
-            lower_case: str = line.lower()
-            first.append(lower_case)
-
-            if "[ banner ]" in lower_case:
-                start = len(first)
-            
-            if " profiling " in lower_case:
-                break
-
-            search: list[str] = first[start: ] if first is not None else first
-
-            for line in search:
-                for name in solver_names:
-                    if name.lower() in line: 
-                        return name
+def detect_solver(log: Path, seen: Iterable[str]) -> Optional[str]:
+    found = banner_solver(log)
+    if found is None:
         return None
+    return {name.lower():  name  for name in seen}.get(found)
 
 
 def pick_first_log(folder: Path) -> Optional[Path]:
@@ -123,12 +101,12 @@ def pick_config(configs: dict[str, dict], solver: Optional[str], src: Path) -> t
 
     log: Optional[Path] = pick_first_log(src)
     if log is None:
-        raise ValueError("no valid logfile found in {source}")
+        raise ValueError(f"no valid logfile found in {src}")
 
     found: Optional[str] = detect_solver(log, known)
     if found is None: 
-        raise ValueError(f"could not find a solver from {log.stem}",
-                         f"use --solver ( known: { ', '.join(known) })")
+        raise ValueError(f"could not find a solver from {log.stem}""\n"
+                          "use --solver ( known: { ', '.join(known) })")
     return configs[found], found
 
 

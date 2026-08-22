@@ -13,7 +13,7 @@ def config_to_profling(config_node: dict, steps: dict[str, SolvingStep]) -> Prof
         ellapsed_time = steps[name].time
         percentage = steps[name].percentage
 
-    for child in config_node["children"]:
+    for child in config_node.get("children", []):
         if child["name"] in steps:  
             children.append(config_to_profling(child, steps))
     

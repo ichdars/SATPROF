@@ -71,7 +71,6 @@ def draw_tree(dot, node, outliers: dict[str, Outlier] = {}, parent_id=None, draw
     """
     function to draw the actual DAG, by identifieng which
     node has a single parent and which one has multiple
-    drawn = set of strings of already drawn nodes
     """
 
     if node is None:

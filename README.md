@@ -127,7 +127,7 @@ Steps which are present in the config but not in the logfile are left out in the
 
 ## DAG-Nodes
 
-The tree is a DAG, this means that a name can occur multiple times, e.g. in the Kissat-Config `propagte` and `decide` are children of stable, as well as they are children of `unstable`. SATPROF draws these nodes one time and directs multiple edges from different parent nodes on them. 
+  The tree is a DAG, this means that a name can occur multiple times, e.g. in the Kissat-Config `propagte` and `decide` are children of `stable`, as well as they are children of `focused`. SATPROF draws these nodes one time and directs multiple edges from different parent nodes on them. 
 
 # What the Visualization means
 

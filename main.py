@@ -16,8 +16,8 @@ def build_parser() -> ArgumentParser:
     parser.add_argument("--file", type=Path)
     parser.add_argument("--aggregate", type=Path, help="fodler of different benchmarks to be aggregated", action="store")
     parser.add_argument("--solver", type=str, help="folder this benchmark is creatd by")
-    parser.add_argument("--output", "--o", type=Path, default=Path("output"), help="Basisverzeichnis für Ausgabedateien (Standard: output/)")
-    parser.add_argument("--dist", action="store_true", help="distribution plot for a benhmarksuite")
+    parser.add_argument("-o", "--output", type=Path, default=Path("output"), help="Basisverzeichnis für Ausgabedateien (Standard: output/)")
+    parser.add_argument("--dist", "-d", action="store_true", help="distribution plot for a benhmarksuite")
 
     return parser
 
@@ -59,8 +59,10 @@ def main(parser: ArgumentParser):
         draw_tree(dot, file_tree, root=benchmark.root)
 
         save = f"{args.file.stem}_{args.solver}_tree"
+        save_dir = base_output / "benchmarks"
+        save_dir.mkdir(parents=True, exist_ok=True)
 
-        dot.render(save, "output/benchmarks", format="png", cleanup=True)
+        dot.render(save, save_dir, format="png", cleanup=True)
         print(f"Saved to output/benchmarks/{save}.png")
 
 
@@ -71,7 +73,7 @@ def main(parser: ArgumentParser):
         aggreagtion_tree: AggregationNode = matrix_to_tree(matrix, config)
 
         save = f"{args.aggregate.stem}_{solver}_tree"
-        save_dir: Path = base_output / "suites" / save
+        save_dir: Path = base_output / f"{args.aggregate.stem}_{solver}"
         save_dir.mkdir(parents=True, exist_ok=True)
 
 

@@ -25,6 +25,12 @@ def build_parser() -> ArgumentParser:
 def main(parser: ArgumentParser):
 
     args = parser.parse_args()
+    if not args.file and not args.aggregate:
+        parser.error("either --file or --aggregate is required")
+    if args.file and args.aggregate:
+        parser.error("--file and --aggregate are mutually exclusive")
+    if args.dist and not args.aggregate:
+        parser.error("--dist requires --aggregate")
 
     configs = load_configs(Path(__file__).parent / "configs")
     config, solver = pick_config(configs, args.solver, args.file or args.aggregate)
@@ -64,7 +70,7 @@ def main(parser: ArgumentParser):
 
         aggreagtion_tree: AggregationNode = matrix_to_tree(matrix, config)
 
-        save = f"{args.aggregate.stem}_{args.solver}_tree"
+        save = f"{args.aggregate.stem}_{solver}_tree"
         save_dir: Path = base_output / "suites" / save
         save_dir.mkdir(parents=True, exist_ok=True)
 

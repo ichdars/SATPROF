@@ -124,3 +124,38 @@ are displayed as well as their hierarchie.
 
 
 Steps which are present in the config but not in the logfile are left out in the tree, while steps from the logfile, which are not present in the config, are jsut ignored. Which means that the Config decides what is displayed and what not.
+
+## DAG-Nodes
+
+The tree is a DAG, this means that a name can occur multiple times, e.g. in the Kissat-Config `propagte` and `decide` are children of stable, as well as they are children of `unstable`. SATPROF draws these nodes one time and directs multiple edges from different parent nodes on them. 
+
+# What the Visualization means
+
+## description for a single Profiling-Node
+
+```
+propagate -> Name of the profiling-step
+4.29s     -> Total run-time portion
+35.71%    -> Percentual run-time portion
+```
+
+## description of an Aggregation-Node
+
+```
+propagate          -> Name of the profiling-step
+35.71%             -> Median of the percentual run-time portion over the entire benchmark
+(21.03;58.77)      -> Minimal and Maximal deteced value over the suite
+142 / 150          -> number of benchmark this step was present in (in this case propagate was present in 142 out of 150 runs)
+```
+
+## Visual elemtns 
+
+| Element | meaning |
+|---|---|
+| `Boxsize` | Root of the runtime portion realtive to the trees root, so the boxsize corresponds to the runtime portion  |
+| `Edgewidth` | also depends on the runtime, so the widther the edge, the bigger the runtime portion |
+| `color` | based on the config can be used, to mark a certain node |
+
+In the aggregated visualization, the percentual values are medians over different benchmarks, since medians are not additive, the sum of the sum of the children can be bigger then the value in their parent node, while a tree for a single run is additive. 
+
+

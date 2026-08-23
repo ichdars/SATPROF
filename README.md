@@ -56,6 +56,14 @@ c           1.88     15.65 %  analyze
 # run the script on a suite of benchmarks with additional distiribution plot
 ./main.py --aggregate <folder> --dist
 
+# ignore the solver detection and force an own or new config
+./main.py --aggregate  <folder> --solver <solvername> 
+
+# or
+./main.py --file <filename>.log --solver <solvername> 
+
+# save the outputs somewhere else then ./output
+./main.py --aggregate <folder> --output <output_dir>
 ```
 
 | Flag | Meaning | Default |
@@ -64,6 +72,7 @@ c           1.88     15.65 %  analyze
 | `--aggregate ORDNER` | aggregates all `.log`-files from a folder  | – |
 | `--solver NAME` | overrides the automatic solver detection | automatic |
 | `--dist` | Generates an additional distribution plot (only with `--aggregate`) | off |
+| `-o`     | output directory you can save the output files to |
 
 The flags `--file` and `--aggregate` exclude eachtother but at least one is necessary for the script to be able to run.
 

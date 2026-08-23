@@ -21,7 +21,7 @@ def calc_node_size(node: node, root: node) -> tuple[float, float]:
 
     frac: float = node.percentage / root.percentage if root.percentage > 0 else 0.0
     size: float = math.sqrt(3 * frac)
-    node_size: float = max(0.5, min(size, 3.5))
+    node_size: float = max(0.6, min(size, 3.5))
     font_size: float = max(10.0, min(25.0, 45.0 * frac))
     return node_size, font_size
 

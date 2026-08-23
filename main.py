@@ -10,6 +10,7 @@ import json
 from graphviz import Digraph, ExecutableNotFound
 import sys
 
+
 def build_parser() -> ArgumentParser:
     parser: ArgumentParser = ArgumentParser()
 
@@ -47,7 +48,6 @@ def main(parser: ArgumentParser):
 
     save: str = ""
 
-    
     if args.file:
 
         steps = read_logfile(args.file)
@@ -58,13 +58,12 @@ def main(parser: ArgumentParser):
 
         draw_tree(dot, file_tree, root=benchmark.root)
 
-        save = f"{args.file.stem}_{args.solver}_tree"
         save_dir = base_output / "benchmarks"
         save_dir.mkdir(parents=True, exist_ok=True)
 
+        save = f"{args.file.stem}_{args.solver}_tree"
         dot.render(save, save_dir, format="png", cleanup=True)
-        print(f"Saved to output/benchmarks/{save}.png")
-
+        print(f"Saved to {save_dir}/{save}.png")
 
     if args.aggregate:
         suite: BenchmarkSuite = BenchmarkSuite(parse_path(args.aggregate, config), config)
@@ -76,13 +75,14 @@ def main(parser: ArgumentParser):
         save_dir: Path = base_output / f"{args.aggregate.stem}_{solver}"
         save_dir.mkdir(parents=True, exist_ok=True)
 
-
         if args.dist:
-            figure = plot_distributions(matrix)
-            dist_path = save_dir / f"{save}_dist.png"
-            figure.savefig(dist_path, dpi=150) # type: ignore
+            figure = figure = plot_distributions(
+                matrix,
+                title=f"{args.aggregate.stem} — {solver}, {len(suite.benchmarks)} benchmarks",
+                )
+            dist_path = save_dir / f"{args.aggregate.stem}_dist.png"
+            figure.savefig(dist_path, dpi=150)  # type: ignore
             plt.close(figure)
-
 
         outliers = filter_outliers(matrix)
 
@@ -92,6 +92,7 @@ def main(parser: ArgumentParser):
         dot.render(save, save_dir, format="png", cleanup=True)
 
         print(f"Saved to {save_dir}/{save}.png")
+
 
 if __name__ == "__main__":
     parser = build_parser()

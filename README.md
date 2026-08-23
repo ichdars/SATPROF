@@ -76,6 +76,19 @@ c           1.88     15.65 %  analyze
 
 The flags `--file` and `--aggregate` exclude eachtother but at least one is necessary for the script to be able to run.
 
+
+## Error handling
+
+Inavlid calls of the script are cancelled directly
+
+```bash
+python main.py                                  # neither --file nor --aggregate
+python main.py --file a.log --aggregate logs/   # mutually exclusive
+python main.py --file a.log --dist              # --dist requires --aggregate
+```
+
+During the aggregation, invalid logfiles are skipped and reported as a warning with stderr; the run continues with the valid files. A logfile is considered unvalid if it does not contain a profiling block, has an empty profiling block or the wrong solver or config is selected.
+
 ## Solver detection
 
 If you leave out the `--solver` flag the solvername , which the logfiles are created with, are read from the Banner-Block from the and picks the corresponding config file from /configs and checks if the logfile and the 
@@ -140,7 +153,7 @@ Steps which are present in the config but not in the logfile are left out in the
 
 # What the Visualization means
 
-## description for a single Profiling-Node
+## Description for a single Profiling-Node
 
 ```
 propagate -> Name of the profiling-step
@@ -148,7 +161,7 @@ propagate -> Name of the profiling-step
 35.71%    -> Percentual run-time portion
 ```
 
-## description of an Aggregation-Node
+## Description of an Aggregation-Node
 
 ```
 propagate          -> Name of the profiling-step
@@ -166,5 +179,26 @@ propagate          -> Name of the profiling-step
 | `color` | based on the config can be used, to mark a certain node |
 
 In the aggregated visualization, the percentual values are medians over different benchmarks, since medians are not additive, the sum of the sum of the children can be bigger then the value in their parent node, while a tree for a single run is additive. 
+
+
+## Distribution Plot
+
+with `--dist` an additional plote is generated in addition to the tree. It shows one box per profiling step, with every benchmark as a point inside or outside the box. 
+
+* The Orange line marks the median
+* the box covers the interquartile range, the whiskers the 5th to 95th percentile
+* the `n=` above the boxes displays the number of benchmarks the step occurs in
+* 
+
+## Archtiecture
+| Module | Responsibility |
+|---|---|
+| `main.py` | CLI, wiring, error output |
+| `src/models.py` | data classes and exception types; has no dependencies of its own |
+| `src/parse.py` | reading log files, solver detection, loading suites |
+| `src/build_tree.py` | loading configs, matching log steps against the config tree |
+| `src/aggregate.py` | condensing a suite into a `ProfileMatrix`, medians and outliers |
+| `src/draw.py` | Graphviz output for both tree types |
+| `src/plot.py` | distribution plot |
 
 

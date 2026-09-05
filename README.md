@@ -10,7 +10,7 @@ for an aggregation.
 
 ## Prerequisites
 
-* Python 3.12 or newer
+* Python 3 or newer
 * Graphviz as systempackage
 * Python dependencies: graphviz, matplotlib
 

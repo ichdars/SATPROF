@@ -30,6 +30,20 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+## Quick Start
+
+You can find a few example logfiles, so you can test the tool real quick.
+
+```bash
+
+# single run
+python3 main.py --file examples/1-ET-256-K-55.sanitized.log
+
+# aggregated suite with distribution plot
+python3 main.py --aggregate examples --dist
+
+```
+
 ## Logfiles
 SATRPOF evaluates the Profiling-block which the solvers print at the end of their run, the profiling block
 only exists if the solver was run with active profiling flag. A Logfile with a valif profiling block has a section like this 
@@ -74,7 +88,7 @@ python3 main.py --aggregate <folder> --output <output_dir>
 | `--aggregate ORDNER` | aggregates all `.log`-files from a folder  | – |
 | `--solver NAME` | overrides the automatic solver detection | automatic |
 | `--dist` | Generates an additional distribution plot (only with `--aggregate`) | off |
-| `-o`     | output directory you can save the output files to |
+| `--output`     | output directory you can save the output files to |
 
 The flags `--file` and `--aggregate` exclude eachtother but at least one is necessary for the script to be able to run.
 
@@ -93,8 +107,7 @@ During the aggregation, invalid logfiles are skipped and reported as a warning w
 
 ## Solver detection
 
-If you leave out the `--solver` flag the solvername , which the logfiles are created with, are read from the Banner-Block from the and picks the corresponding config file from /configs and checks if the logfile and the 
-solver have the same solvername, if not the run crashes with an error.
+If you leave out the `--solver` flag which represents the solvername of the solver which the logfiles are created with. Are read from the Banner-Block from the and picks the corresponding config file from /configs and checks if the logfile and the solver have the same solvername, if not the run crashes with an error.
 
 
 ## Output
@@ -189,8 +202,10 @@ with `--dist` an additional plote is generated in addition to the tree. It shows
 
 * The Orange line marks the median
 * the box covers the interquartile range, the whiskers the 5th to 95th percentile
-* the `n=` above the boxes displays the number of benchmarks the step occurs in
-* 
+* the `n=` above the boxes displays the number of benchmarks the step occurs in 
+
+
+![Distribution Plot for an aggregated Benchmark-suite](docs/images/image2.png)
 
 ## Archtiecture
 | Module | Responsibility |

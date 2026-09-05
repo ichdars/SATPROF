@@ -35,7 +35,7 @@ def load_configs(configs: pathlib.Path) -> dict[str, dict]:
             config = json.load(file)
             name = config.get("solver")        
             if name is None:
-                raise SatProfError()
+                raise SatProfError("Could not detect a Solver")
             if name in res:
                 raise SatProfError("Solver is already configurated")
             res[name] = config

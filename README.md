@@ -5,6 +5,8 @@ SATPROF reads the profiling block from the Solver logfiles and displays them as 
 for a single run or for an aggregated benchmark suite, it can optionally show a plotted distribution
 for an aggregation.
 
+![Aggregated Tree for a Benchmark-suite](docs/images/image1.png)
+
 
 ## Prerequisites
 
@@ -47,23 +49,23 @@ c           1.88     15.65 %  analyze
 
 ```bash
 # run the script on a single benchmark
-./main.py --file <filename>.log
+python3 main.py --file <filename>.log
 
 # run the script on a suite of benchmarks without additional distiribution plot
 
-./main.py --aggregate <folder>
+python3 main.py --aggregate <folder>
 
 # run the script on a suite of benchmarks with additional distiribution plot
-./main.py --aggregate <folder> --dist
+python3 main.py --aggregate <folder> --dist
 
 # ignore the solver detection and force an own or new config
-./main.py --aggregate  <folder> --solver <solvername> 
+python3 main.py --aggregate  <folder> --solver <solvername> 
 
 # or
-./main.py --file <filename>.log --solver <solvername> 
+python3 main.py --file <filename>.log --solver <solvername> 
 
 # save the outputs somewhere else then ./output
-./main.py --aggregate <folder> --output <output_dir>
+python3 main.py --aggregate <folder> --output <output_dir>
 ```
 
 | Flag | Meaning | Default |
@@ -82,9 +84,9 @@ The flags `--file` and `--aggregate` exclude eachtother but at least one is nece
 Inavlid calls of the script are cancelled directly
 
 ```bash
-python main.py                                  # neither --file nor --aggregate
-python main.py --file a.log --aggregate logs/   # mutually exclusive
-python main.py --file a.log --dist              # --dist requires --aggregate
+python3 main.py                                  # neither --file nor --aggregate
+python3 main.py --file a.log --aggregate logs/   # mutually exclusive
+python3 main.py --file a.log --dist              # --dist requires --aggregate
 ```
 
 During the aggregation, invalid logfiles are skipped and reported as a warning with stderr; the run continues with the valid files. A logfile is considered unvalid if it does not contain a profiling block, has an empty profiling block or the wrong solver or config is selected.
@@ -202,3 +204,12 @@ with `--dist` an additional plote is generated in addition to the tree. It shows
 | `src/plot.py` | distribution plot |
 
 
+
+## Known limitations
+
+* A suite must originate from a single solver; mixed folders are not aggregated.
+* Medians are not additive — the aggregated view is a distribution overview, not a
+  runtime balance sheet.
+* `profiling_lvl` is read and carried in the node model, but does not currently affect
+  the output.
+* All relative sizes are computed against the root node of the config.

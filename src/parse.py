@@ -62,9 +62,6 @@ def parse_path(folder: Path, config_tree: dict) -> list[Benchmark]:
     p = pathlib.Path(folder)
     logs = p.glob("*.log")
 
-    if not logs:
-        raise SatProfError(f"no log file found in p: {p}")
-
     for log in logs:
         try:
             benchmark: Benchmark = create_benchmark(log, config_tree, log.stem, config_tree["solver"])

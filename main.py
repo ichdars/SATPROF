@@ -54,14 +54,16 @@ def main(parser: ArgumentParser):
 
         file_tree = compare_log_to_config(steps, config)
 
-        benchmark: Benchmark = create_benchmark(args.file, config, "a benchmark", "cadical", 4)
-
-        draw_tree(dot, file_tree, root=benchmark.root)
+        draw_tree(dot, file_tree, root=file_tree)
 
         save_dir = base_output / "benchmarks"
+
+        if args.output:
+            save_dir = base_output
+
         save_dir.mkdir(parents=True, exist_ok=True)
 
-        save = f"{args.file.stem}_{args.solver}_tree"
+        save = f"{args.file.stem}_{solver}_tree"
         dot.render(save, save_dir, format="png", cleanup=True)
         print(f"Saved to {save_dir}/{save}.png")
 
@@ -72,7 +74,7 @@ def main(parser: ArgumentParser):
         aggreagtion_tree: AggregationNode = matrix_to_tree(matrix, config)
 
         save = f"{args.aggregate.stem}_{solver}_tree"
-        save_dir: Path = base_output / f"{args.aggregate.stem}_{solver}"
+        save_dir: Path = base_output / "suites" / f"{args.aggregate.stem}_{solver}"
         save_dir.mkdir(parents=True, exist_ok=True)
 
         if args.dist:

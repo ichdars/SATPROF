@@ -73,7 +73,6 @@ def main(parser: ArgumentParser):
 
         aggreagtion_tree: AggregationNode = matrix_to_tree(matrix, config)
 
-        save = f"{args.aggregate.stem}_{solver}_tree"
         save_dir: Path = base_output / "suites" / f"{args.aggregate.stem}_{solver}"
         save_dir.mkdir(parents=True, exist_ok=True)
 
@@ -89,11 +88,11 @@ def main(parser: ArgumentParser):
         outliers = filter_outliers(matrix)
 
         draw_tree(dot, aggreagtion_tree, outliers, root=aggreagtion_tree)
-        write_outliers(outliers, save_dir / f"{save}_outliers.txt")
+        write_outliers(outliers, save_dir / "outliers.txt")
 
-        dot.render(save, save_dir, format="png", cleanup=True)
+        dot.render("tree", save_dir, format="png", cleanup=True)
 
-        print(f"Saved to {save_dir}/{save}.png")
+        print(f"Saved to {save_dir}.png")
 
 
 if __name__ == "__main__":

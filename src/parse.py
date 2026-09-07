@@ -50,7 +50,7 @@ def read_logfile(log: Path) -> list[SolvingStep]:
             raise LogFileError(f"didnt find profiling block in {log.stem}")
 
         if res == []:
-            raise LogFileError("no solvingsteps available")
+            raise LogFileError(f"no solvingsteps available {log.stem}")
 
 
     return res
@@ -72,7 +72,7 @@ def parse_path(folder: Path, config_tree: dict) -> list[Benchmark]:
         print(f"warning: skipped {skip}", file=sys.stderr)
 
     if not res:
-        raise SatProfError(f"no usable lofile in {p}")
+        raise SatProfError(f"no usable logfile in {p}")
 
     return res
 

@@ -1,7 +1,7 @@
 # logfiles
 logs/
 *.err
-
+*.log
 
 
 # Byte-compiled / optimized / DLL files

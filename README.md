@@ -37,10 +37,10 @@ You can find a few example logfiles, so you can test the tool real quick.
 ```bash
 
 # single run
-python3 main.py --file examples/1-ET-256-K-55.sanitized.log
+python3 satprof.py --file examples/1-ET-256-K-55.sanitized.log
 
 # aggregated suite with distribution plot
-python3 main.py --aggregate examples --dist
+python3 satprof.py --aggregate examples --dist
 
 ```
 
@@ -63,23 +63,23 @@ c           1.88     15.65 %  analyze
 
 ```bash
 # run the script on a single benchmark
-python3 main.py --file <filename>.log
+python3 satprof.py --file <filename>.log
 
 # run the script on a suite of benchmarks without additional distiribution plot
 
-python3 main.py --aggregate <folder>
+python3 satprof.py --aggregate <folder>
 
 # run the script on a suite of benchmarks with additional distiribution plot
-python3 main.py --aggregate <folder> --dist
+python3 satprof.py --aggregate <folder> --dist
 
 # ignore the solver detection and force an own or new config
-python3 main.py --aggregate  <folder> --solver <solvername> 
+python3 satprof.py --aggregate  <folder> --solver <solvername> 
 
 # or
-python3 main.py --file <filename>.log --solver <solvername> 
+python3 satprof.py --file <filename>.log --solver <solvername> 
 
 # save the outputs somewhere else then ./output
-python3 main.py --aggregate <folder> --output <output_dir>
+python3 satprof.py --aggregate <folder> --output <output_dir>
 ```
 
 | Flag | Meaning | Default |
@@ -98,9 +98,9 @@ The flags `--file` and `--aggregate` exclude eachtother but at least one is nece
 Inavlid calls of the script are cancelled directly
 
 ```bash
-python3 main.py                                  # neither --file nor --aggregate
-python3 main.py --file a.log --aggregate logs/   # mutually exclusive
-python3 main.py --file a.log --dist              # --dist requires --aggregate
+python3 satprof.py                                  # neither --file nor --aggregate
+python3 satprof.py --file a.log --aggregate logs/   # mutually exclusive
+python3 satprof.py --file a.log --dist              # --dist requires --aggregate
 ```
 
 During the aggregation, invalid logfiles are skipped and reported as a warning with stderr; the run continues with the valid files. A logfile is considered unvalid if it does not contain a profiling block, has an empty profiling block or the wrong solver or config is selected.
@@ -210,7 +210,7 @@ with `--dist` an additional plote is generated in addition to the tree. It shows
 ## Archtiecture
 | Module | Responsibility |
 |---|---|
-| `main.py` | CLI, wiring, error output |
+| `satprof.py` | CLI, wiring, error output |
 | `src/models.py` | data classes and exception types; has no dependencies of its own |
 | `src/parse.py` | reading log files, solver detection, loading suites |
 | `src/build_tree.py` | loading configs, matching log steps against the config tree |

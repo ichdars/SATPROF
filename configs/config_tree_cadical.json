@@ -4,7 +4,7 @@
     "solver": "cadical",
     "children": [
         { "name": "parse", "profiling_lvl": 0, "children": [] },
-        { "name": "check", "profiling_lvl": 2, "children": [] },
+        { "name": "check", "profiling_lvl": 2, "color": "red", "children": [] },
         { "name": "search", "profiling_lvl": 1, "children": [
             { "name": "stable", "profiling_lvl": 2, "children": [
                 { "name": "analyze", "profiling_lvl": 3, "children": [

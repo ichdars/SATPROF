@@ -41,7 +41,7 @@ def main(parser: ArgumentParser):
     if first_log is not None:
         verify_solver(first_log, config)
 
-    base_output: Path = args.output.expanduser()
+    base_output: Path = (args.output or Path("output")).expanduser()
 
     dot = Digraph()
     dot.attr(rankdir="TB")
@@ -64,8 +64,8 @@ def main(parser: ArgumentParser):
         save_dir.mkdir(parents=True, exist_ok=True)
 
         save = f"{args.file.stem}_{solver}_tree"
-        dot.render(save, save_dir, format="png", cleanup=True)
-        print(f"Saved to {save_dir}/{save}.png")
+        rendered = dot.render(save, save_dir, format="png", cleanup=True)
+        print(f"Saved to {rendered}")
 
     if args.aggregate:
         suite: BenchmarkSuite = BenchmarkSuite(parse_path(args.aggregate, config), config)
@@ -90,9 +90,9 @@ def main(parser: ArgumentParser):
         draw_tree(dot, aggreagtion_tree, outliers, root=aggreagtion_tree)
         write_outliers(outliers, save_dir / "outliers.txt")
 
-        dot.render("tree", save_dir, format="png", cleanup=True)
+        rendered = dot.render("tree", save_dir, format="png", cleanup=True)
 
-        print(f"Saved to {save_dir}.png")
+        print(f"Saved to {rendered}")
 
 
 if __name__ == "__main__":
@@ -104,3 +104,4 @@ if __name__ == "__main__":
         sys.exit(1)
     except ExecutableNotFound:
         print("Error: Graphviz executable not found. Please ensure Graphviz is installed and added to your system's PATH.", file=sys.stderr)
+        sys.exit(1)

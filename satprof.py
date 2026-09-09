@@ -88,9 +88,9 @@ def main(parser: ArgumentParser):
         outliers = filter_outliers(matrix)
 
         draw_tree(dot, aggreagtion_tree, outliers, root=aggreagtion_tree)
-        write_outliers(outliers, save_dir / "outliers.txt")
+        write_outliers(outliers, save_dir / f"{args.aggregate.stem}_outliers.txt")
 
-        rendered = dot.render("tree", save_dir, format="png", cleanup=True)
+        rendered = dot.render(f"{args.aggregate.stem}_{solver}_tree", save_dir, format="png", cleanup=True)
 
         print(f"Saved to {rendered}")
 

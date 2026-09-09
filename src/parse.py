@@ -12,6 +12,10 @@ SOLVER_BANNER = re.compile(r"^c\s+(\S+)\s+SAT\s+SOLVER", re.IGNORECASE)
 
 
 def read_logfile(log: Path) -> list[SolvingStep]:
+    """
+    function to extract the needed data out of a single logfile
+    """
+
     pattern = re.compile(r"c\s+(\d+\.\d+)\s+(\d+\.\d+)\s*%\s+(\w+)")
     res: list[SolvingStep] = []
 
@@ -57,6 +61,9 @@ def read_logfile(log: Path) -> list[SolvingStep]:
 
 
 def parse_path(folder: Path, config_tree: dict) -> list[Benchmark]:
+    """
+    this function takes a path and transforms every logfile into a benchmark object
+    """
     res: list[Benchmark] = []
     skipped: list[str] = []
     p = pathlib.Path(folder)
@@ -77,6 +84,10 @@ def parse_path(folder: Path, config_tree: dict) -> list[Benchmark]:
     return res
 
 def create_benchmark(log_path: Path, config: dict, name: str, solver: str, profiling_lvl: int=2):
+    """
+    function to transform a single logfile to a benchmark object
+    """
+
     steps: list[SolvingStep] = read_logfile(log_path)
     steps_dict = {s.name: s for s in steps}
     root: ProfilingNode = compare_log_to_config(steps, config)
@@ -84,11 +95,19 @@ def create_benchmark(log_path: Path, config: dict, name: str, solver: str, profi
 
 
 def load_suite(folder: Path, config: dict) -> tuple[BenchmarkSuite, ProfileMatrix]:
+    """
+    makes a folder of logfiles to a suite of benchmarks
+    """
+
     suite: BenchmarkSuite = BenchmarkSuite(parse_path(folder, config), config)
     return suite, build_matrix(suite)
 
 
 def detect_solver(log: Path, seen: Iterable[str]) -> Optional[str]:
+    """
+    detects the wich solver a given benchmark was created with
+    """
+
     found = banner_solver(log)
     if found is None:
         return None
@@ -96,6 +115,11 @@ def detect_solver(log: Path, seen: Iterable[str]) -> Optional[str]:
 
 
 def pick_first_log(folder: Path) -> Optional[Path]:
+
+    """
+    extracts the first logfile to see which solver the suite was created by
+    """
+    
     if not folder.exists():
         raise SatProfError(f"Path does not exist: {folder}")
     if folder.is_file():
@@ -107,6 +131,10 @@ def pick_first_log(folder: Path) -> Optional[Path]:
 
 
 def pick_config(configs: dict[str, dict], solver: Optional[str], src: Path) -> tuple[dict, str]:
+
+    """
+    picks the right config file based on the detected solver
+    """
 
     known: list[str] = sorted(configs.keys())
 
@@ -128,7 +156,9 @@ def pick_config(configs: dict[str, dict], solver: Optional[str], src: Path) -> t
 
 
 def banner_solver(log: Path, max_lines: int = 40) -> Optional[str]:
-
+    """
+    matches the banner of the solvers with a given string
+    """
     with log.open("r", encoding="utf-8", errors="replace") as file:
         for index, line in enumerate(file):
             if index >= max_lines:
@@ -141,6 +171,10 @@ def banner_solver(log: Path, max_lines: int = 40) -> Optional[str]:
         return None
 
 def verify_solver(log: Path, config: dict) -> None:
+
+    """
+    checks if the solver of the logfile matches the config solver
+    """
 
     expected: str = config["solver"].lower()
     found: Optional[str] = banner_solver(log)

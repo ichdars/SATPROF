@@ -9,6 +9,10 @@ from matplotlib.lines import Line2D
 
 
 def plot_distributions(matrix: ProfileMatrix, jitter=0.075, seed=0, title=None):
+    """
+    this function reads the profilematrix and transforms it into a distribution plot based on total runtime
+    """
+
     names: list[str] = []
     data: list[list[float]] = []
     for node in matrix.node_order[1: ]:

@@ -4,6 +4,11 @@ from .models import SolvingStep, ProfilingNode, SatProfError
 import pathlib
 
 def config_to_profiling(config_node: dict, steps: dict[str, SolvingStep]) -> ProfilingNode:
+
+    """
+    checks which step from the config file is present in the solving steps in the logfile
+    """
+
     name: str = config_node["name"]
     children: list[ProfilingNode] = []
     ellapsed_time: float = 0.0
@@ -28,6 +33,11 @@ def compare_log_to_config(steps: list[SolvingStep], config: dict):
 
 
 def load_configs(configs: pathlib.Path) -> dict[str, dict]:
+
+    """
+    loads the given config from /configs folder
+    """
+
     res: dict[str, dict] = {}
     p: pathlib.Path = pathlib.Path(configs)
     for config_path in p.glob("*.json"):

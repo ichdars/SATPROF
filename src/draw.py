@@ -7,6 +7,9 @@ node: TypeAlias = ProfilingNode | AggregationNode
 
 
 def label_node(node: node, min: float = 0, max: float = 0) -> str:
+    """"
+    function to give the nodes thei necessary information
+    """
     if isinstance(node, ProfilingNode):
         return f"{node.name}\n{node.time:.2f}s \n{node.percentage:.2f}%"
     if isinstance(node, AggregationNode):

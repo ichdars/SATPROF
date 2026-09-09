@@ -7,6 +7,11 @@ import statistics
 
 
 def dfs_node_name(config: dict) -> list[str]:
+
+    """
+    loads all nodes from config file
+    """
+
     res: list[str] = []
     seen: set[str] = set()
     def step(node: dict):
@@ -24,6 +29,11 @@ def dfs_node_name(config: dict) -> list[str]:
 
 
 def calc_spreading(column: list[float]) -> float:
+
+    """
+    calculates the average spreading from the median for the total runtime
+    """
+
     if len(column) < 2:
         return 0.0
     s: list[float] = sorted(column)
@@ -33,6 +43,11 @@ def calc_spreading(column: list[float]) -> float:
 
 
 def filter_outliers(matrix: ProfileMatrix) -> dict[str, Outlier]:
+
+    """
+    gives back the minimum and maximum benchmark for percentual runtime
+    """
+
     res: dict[str, Outlier] = {}
 
     for node in matrix.node_order:
@@ -66,6 +81,11 @@ def filter_outliers(matrix: ProfileMatrix) -> dict[str, Outlier]:
 
 
 def write_outliers(outliers: dict[str, Outlier], path: Path = Path("outliers.txt")) -> None:
+
+    """
+    writes outliers into a text file
+    """
+
     with path.open("w", encoding="utf-8") as file:
         for node, outlier in outliers.items():
             if node != "total":
@@ -75,6 +95,12 @@ def write_outliers(outliers: dict[str, Outlier], path: Path = Path("outliers.txt
 
 
 def build_matrix(suite: BenchmarkSuite) -> ProfileMatrix:
+
+    """
+    builds a Profilemarix with the benchmarks as columns and the percentual and total runtime as rows as well 
+    as the presence of the solvingsteps 
+    """
+
     node_order: list[str] = dfs_node_name(suite.config)
     percent, time, is_present = {}, {}, {}
     for name in node_order:
@@ -88,6 +114,10 @@ def build_matrix(suite: BenchmarkSuite) -> ProfileMatrix:
 
 
 def matrix_to_tree(matrix: ProfileMatrix, config: dict) -> AggregationNode:
+
+    """
+    builds an aggregated tree from the Profilematrix
+    """
 
     def build(config_node: dict):
         name: str = config_node["name"]

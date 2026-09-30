@@ -48,7 +48,7 @@
                 { "name": "vivify", "profiling_lvl": 4, "children": [] },
                 { "name": "compact", "profiling_lvl": 4, "children": [] },
                 { "name": "condition", "profiling_lvl": 4, "children": [] },
-                { "name": "conngruence", "profiling_lvl": 4, "children": [
+                { "name": "congruence", "profiling_lvl": 4, "children": [
                     { "name": "extract", "profiling_lvl": 4, "children": [] }
                 ] },
                 { "name": "connect", "profiling_lvl": 4, "children": [] },
